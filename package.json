@@ -1,0 +1,20 @@
+{
+  "name": "projeto-2-web",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\"> Seu título aqui </h1>",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielalves-utfpr/projeto-2-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabrielalves-utfpr/projeto-2-web/issues"
+  },
+  "homepage": "https://github.com/gabrielalves-utfpr/projeto-2-web#readme"
+}
