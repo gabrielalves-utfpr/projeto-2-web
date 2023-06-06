@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/gabrielalves-utfpr/projeto-2-web/issues"
   },
-  "homepage": "https://github.com/gabrielalves-utfpr/projeto-2-web#readme"
+  "homepage": "https://github.com/gabrielalves-utfpr/projeto-2-web#readme",
+  "dependencies": {
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "mysql2": "^3.3.3",
+    "nodemon": "^2.0.22",
+    "sequelize": "^6.32.0"
+  }
 }
