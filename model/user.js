@@ -1,6 +1,14 @@
 const { DataTypes, Op } = require("sequelize")
 const sequelize = require("../helpers/db")
 
+/*
+    ? Tabela "Users":
+*   id: int pkey
+*   nome: string
+*   senha: string
+*   administrador: bool
+*/
+
 const UserModel = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
@@ -8,7 +16,8 @@ const UserModel = sequelize.define('User', {
         primaryKey: true
     },
     username: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    administrador: DataTypes.BOOLEAN
 })
 
 module.exports = {
@@ -17,17 +26,18 @@ module.exports = {
         return users
     },
 
-    save: async function (username) {
+    save: async function (obj) {
         const user = await UserModel.create({
-            username: username
+            username: obj.username,
+            password: obj.password
         })
 
         return user
     },
 
-    update: async function (id, username, password) {
+    update: async function (id, obj) {
         return await UserModel.update(
-            { username: username, password: password },
+            { username: obj.username, password: obj.password },
             { where: { id: id } }
         )
     },
@@ -64,5 +74,14 @@ module.exports = {
             }
         })
     },
+
+    isAdmin: function (obj) {
+        if (obj.administrador == true) {
+            return true
+        } else {
+            return false
+        }
+    },
+
     model: UserModel
 }
