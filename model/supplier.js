@@ -7,7 +7,7 @@
 const { DataTypes } = require("sequelize")
 const sequelize = require("../helpers/db")
 
-const UserModel = sequelize.define('User', {
+const SupplierModel = sequelize.define('Supplier', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -20,3 +20,7 @@ const UserModel = sequelize.define('User', {
         allowNull: false,
     },
 })
+
+module.exports = {
+    model: SupplierModel
+}
