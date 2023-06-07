@@ -1,10 +1,10 @@
-const { DataTypes, Op } = require("sequelize")
+const { DataTypes } = require("sequelize")
 const sequelize = require("../helpers/db")
 
 /*
     ? Tabela "Users":
 *   id: int pkey
-*   nome: string
+*   username: string
 *   senha: string
 *   administrador: bool
 */
@@ -57,7 +57,6 @@ module.exports = {
     },
 
     delete: async function (id) {
-        //Precisa fazer algo para os livros que este autor possui
         return await UserModel.destroy({ where: { id: id } })
     },
 
@@ -70,7 +69,7 @@ module.exports = {
             where: {
                 username: username
                 // Username has to be the exact
-                //{ [Op.like]: '%' + username + '%' }
+                // so no { [Op.like]: '%' + username + '%' }
             }
         })
     },
