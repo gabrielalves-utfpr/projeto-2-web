@@ -4,3 +4,6 @@
 *   nome: string
 *   price: int
 */
+
+const { DataTypes } = require("sequelize")
+const sequelize = require("../helpers/db")

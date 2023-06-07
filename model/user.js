@@ -93,5 +93,17 @@ module.exports = {
         }
     },
 
+    toAdmin: async function (id) {
+        return await UserModel.update(
+            { administrador: true },
+            { where: { id: id } })
+    },
+
+    toNotAdmin: async function (id) {
+        return await UserModel.update(
+            { administrador: false },
+            { where: { id: id } })
+    },
+
     model: UserModel
 }
