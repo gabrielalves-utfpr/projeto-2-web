@@ -18,7 +18,7 @@ module.exports = {
     },
 
     save: async function (username) {
-        const user = await AuthorModel.create({
+        const user = await UserModel.create({
             username: username
         })
 
@@ -26,27 +26,41 @@ module.exports = {
     },
 
     update: async function (id, username, password) {
-        return await AuthorModel.update(
+        return await UserModel.update(
             { username: username, password: password },
+            { where: { id: id } }
+        )
+    },
+
+    changePassword: async function (id, password) {
+        return await UserModel.update(
+            { password: password },
+            { where: { id: id } }
+        )
+    },
+
+    changeUserName: async function (id, username) {
+        return await UserModel.update(
+            { username: username },
             { where: { id: id } }
         )
     },
 
     delete: async function (id) {
         //Precisa fazer algo para os livros que este autor possui
-        return await AuthorModel.destroy({ where: { id: id } })
+        return await UserModel.destroy({ where: { id: id } })
     },
 
     getById: async function (id) {
-        return await AuthorModel.findByPk(id)
+        return await UserModel.findByPk(id)
     },
 
     getByName: async function (username) {
-        return await AuthorModel.findOne({
+        return await UserModel.findOne({
             where: {
-                username: {
-                    [Op.like]: '%' + username + '%'
-                }
+                username: username
+                // Username has to be the exact
+                //{ [Op.like]: '%' + username + '%' }
             }
         })
     },
