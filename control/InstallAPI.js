@@ -3,15 +3,15 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     /*
-    ? Tabela "Users":
-*   id	nome	senha	    administrador
-    1	João	G9$@e5yP	true
-    2	Maria	jK#7*2v!	false
-    3	Pedro	X6@fR4tZ	false
-    4	Ana 	bQ%3&8wK	false
-    5	Carlos	L2!sF5pA	false
+    ? Tabela "User":
+*   id	username	senha	    administrador
+    1	João	    G9$@e5yP	true
+    2	Maria	    jK#7*2v!	false
+    3	Pedro	    X6@fR4tZ	false
+    4	Ana 	    bQ%3&8wK	false
+    5	Carlos	    L2!sF5pA	false
 
-    ? Tabela "Products":
+    ? Tabela "Product":
 *   id	nome	    preço
     1	Camiseta	29.99
     2	Calça   	79.99
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     4	Moletom	    59.99
     5	Saia	    39.99
 
-    ? Tabela "Categories":
+    ? Tabela "Categorie":
 *   id	nome
     1	Roupas
     2	Calçados
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
     4	Eletrônicos
     5	Beleza
 
-    ? Tabela "Suppliers":
+    ? Tabela "Supplier":
 *   id	nome
     1	Fornecedor A
     2	Fornecedor B

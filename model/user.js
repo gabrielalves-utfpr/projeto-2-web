@@ -13,11 +13,22 @@ const UserModel = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
+        allowNull: false,
         primaryKey: true
     },
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    administrador: DataTypes.BOOLEAN
+    username: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    administrador: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+    },
 })
 
 module.exports = {
