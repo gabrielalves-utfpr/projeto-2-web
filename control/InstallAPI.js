@@ -34,13 +34,5 @@ router.get('/', async (req, res) => {
     3	Fornecedor C
     4	Fornecedor D
     5	Fornecedor E
-
-    ? Tabela "ProductSupplier" (RELACIONAL):
-*   id	product_id	supplier_id
-    1	1	        1
-    2	2	        1
-    3	2	        2
-    4	3	        3
-    5	4	        2
     */
 })
