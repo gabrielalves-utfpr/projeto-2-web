@@ -12,12 +12,12 @@ router.get('/', async (req, res) => {
     5	Carlos	    L2!sF5pA	false
 
     ? Tabela "Product":
-*   id	nome	    preço
-    1	Camiseta	29.99
-    2	Calça   	79.99
-    3	Tênis	    99.99
-    4	Moletom	    59.99
-    5	Saia	    39.99
+*   id	nome	    preço   QTD
+    1	Camiseta	29.99   10
+    2	Calça   	79.99   5
+    3	Tênis	    99.99   12
+    4	Moletom	    59.99   3
+    5	Saia	    39.99   7
 
     ? Tabela "Categorie":
 *   id	nome

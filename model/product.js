@@ -26,6 +26,10 @@ const ProductModel = sequelize.define('Product', {
         type: DataTypes.DOUBLE,
         allowNull: false,
     },
+    qtd: { //quantidade
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
 })
 
 ProductModel.belongsTo(SupplierModel, {
