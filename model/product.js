@@ -7,6 +7,7 @@
 
 const { DataTypes } = require("sequelize")
 const sequelize = require("../helpers/db")
+const supplier = require("./supplier")
 const SupplierModel = require('./supplier').model
 const CategorieModel = require('./categorie').model
 
@@ -24,10 +25,6 @@ const ProductModel = sequelize.define('Product', {
     },
     price: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
-    },
-    qtd: { //quantidade
-        type: DataTypes.INTEGER,
         allowNull: false,
     },
 })
@@ -48,11 +45,23 @@ module.exports = {
         return products
     },
 
-    save: async function (obj) {
+    saveObj: async function (obj) {
         const product = await ProductModel.create({
             name: obj.name,
-            qtd: obj.qtd,
-            price: obj.price
+            price: obj.price,
+            supplier: obj.supplier,
+            categorie: obj.categorie
+        })
+
+        return product
+    },
+
+    save: async function (name, price, supplier, categorie) {
+        const product = await ProductModel.create({
+            name: name,
+            price: price,
+            supplier: supplier,
+            categorie: categorie
         })
 
         return product
@@ -60,7 +69,7 @@ module.exports = {
 
     update: async function (id, obj) {
         return await ProductModel.update(
-            { name: obj.name, qtd: obj.qtd, price: obj.price },
+            { name: obj.name, price: obj.price },
             { where: { id: id } }
         )
     },
@@ -75,19 +84,6 @@ module.exports = {
     changePrice: async function (id, price) {
         return await ProductModel.update(
             { price: price },
-            { where: { id: id } }
-        )
-    },
-    addRemoveQtd: async function (id, qtd) { // qtd + add; qtd - remove
-        return await ProductModel.update(
-            { qtd: ProductModel.findByPk(id).qtd + qtd },
-            { where: { id: id } }
-        )
-    },
-
-    buy: async function (id) {
-        return await ProductModel.update(
-            { qtd: ProductModel.findByPk(id).qtd - 1 },
             { where: { id: id } }
         )
     },
