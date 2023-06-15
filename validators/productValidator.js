@@ -26,7 +26,7 @@ module.exports = {
     validateProduct: function(req, res,next){
         const {error, value} = ProductSchema.validate(req.body);
         if(error){
-            return res.json({status: false, menssage: "Dados do Produto Imcompletos/Errados"})
+            return res.status(400).json({status: false, menssage: "Dados do Produto Imcompletos/Errados"})
         }
         req.body = value
         return next()

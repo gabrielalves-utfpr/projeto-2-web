@@ -19,7 +19,7 @@ module.exports = {
     validateUser: function(req, res,next){
         const {error, value} = UserSchema.validate(req.body);
         if(error){
-            return res.json({status: false, menssage: "User/Password Imcompletos/Errados"})
+            return res.status(400).json({status: false, menssage: "User/Password Imcompletos/Errados"})
         }
         req.body = value
         return next()
