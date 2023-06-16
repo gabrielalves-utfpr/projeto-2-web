@@ -23,12 +23,19 @@ const CategorieModel = sequelize.define('Categorie', {
 
 module.exports = {
     list: async function () {
-        const suppliers = await SupplierModel.findAll()
-        return suppliers
+        const categorie = await CategorieModel.findAll()
+        return categorie
+    },
+    listByPage: async function (limit, pag) {
+        const product = await CategorieModel.findAndCountAll({
+            offset: limit * (pag - 1),
+            limit: limit
+        })
+        return product // {count | rows}
     },
 
     save: async function (name) {
-        const supplier = await SupplierModel.create({
+        const supplier = await CategorieModel.create({
             name: name,
         })
 
@@ -36,22 +43,22 @@ module.exports = {
     },
 
     update: async function (id, name) {
-        return await SupplierModel.update(
+        return await CategorieModel.update(
             { name: name },
             { where: { id: id } }
         )
     },
 
     delete: async function (id) {
-        return await SupplierModel.destroy({ where: { id: id } })
+        return await CategorieModel.destroy({ where: { id: id } })
     },
 
     getById: async function (id) {
-        return await SupplierModel.findByPk(id)
+        return await CategorieModel.findByPk(id)
     },
 
     getByName: async function (name) {
-        return await SupplierModel.findOne({
+        return await CategorieModel.findOne({
             where: {
                 name: name
             }

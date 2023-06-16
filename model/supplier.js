@@ -26,6 +26,13 @@ module.exports = {
         const suppliers = await SupplierModel.findAll()
         return suppliers
     },
+    listByPage: async function (limit, pag) {
+        const supplier = await SupplierModel.findAndCountAll({
+            offset: limit * (pag - 1),
+            limit: limit
+        })
+        return supplier // {count | rows}
+    },
 
     save: async function (name) {
         const supplier = await SupplierModel.create({

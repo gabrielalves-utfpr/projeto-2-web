@@ -37,6 +37,13 @@ module.exports = {
         const users = await UserModel.findAll()
         return users
     },
+    listByPage: async function (limit, pag) {
+        const users = await UserModel.findAndCountAll({
+            offset: limit * (pag - 1),
+            limit: limit
+        })
+        return users // {count | rows}
+    },
 
     save: async function (obj) {
         const user = await UserModel.create({
