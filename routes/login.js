@@ -8,7 +8,7 @@ router.post('/', userValidator.validateUser, (req, res) => {
     const {username, password} = req.body
     UserModel.getByUserName(username).then(user => {
         if(user.password == password){
-            res.json(sucess(user))
+            res.json(sucess("Login Sucessfull"))
         }else{
             res.status(401).json(fail("Password Incorreto"))
         }
@@ -18,15 +18,10 @@ router.post('/', userValidator.validateUser, (req, res) => {
 })
 
 router.post('/subscribe', userValidator.validateUser, (req, res) => {
-    const {username, password} = req.body
-    UserModel.getByUserName(username).then(user => {
-        if(user.password == password){
-            res.json(sucess(user))
-        }else{
-            res.status(401).json(fail("Password Incorreto"))
-        }
+    UserModel.save(req.body).then(user => {
+        res.json(sucess(user))
     }).catch(erro => {
-        res.status(401).json(fail("Usuário Incorreto"))
+        res.status(401).json(fail("Falha ao Cadastrar"))
     })
 })
 

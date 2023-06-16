@@ -46,7 +46,7 @@ module.exports = {
     },
 
     save: async function (obj) {
-        const user = await UserModel.create({
+        user = await UserModel.create({
             username: obj.username,
             password: obj.password
         })
