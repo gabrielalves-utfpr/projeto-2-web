@@ -13,7 +13,7 @@ const UserSchema = Joi.object({
         .required()
         .max(20),
     administrador: Joi.boolean(),
-}).with('id', 'username', 'password', 'administrador')
+})
 
 module.exports = {
     validateUser: function(req, res,next){
