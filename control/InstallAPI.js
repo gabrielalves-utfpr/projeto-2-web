@@ -49,3 +49,5 @@ router.get('/', async (req, res) => {
     5	Batom	    39.99   7       5       5
     */
 })
+
+module.exports = router

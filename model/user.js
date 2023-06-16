@@ -83,7 +83,7 @@ module.exports = {
         return await UserModel.findByPk(id)
     },
 
-    getByName: async function (username) {
+    getByUserName: async function (username) {
         return await UserModel.findOne({
             where: {
                 username: username
