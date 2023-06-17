@@ -10,7 +10,15 @@ router.get('/', auth.authenticate, auth.isAdminAuth, async (req, res) => {
 })
 //Rota para Criar Usuário ou Admin
 //Necessário ser admin
-router.post('/create', userValidator.validateUser, auth.authenticate, auth.isAdminAuth, (req, res) => {
+//antes /create
+/*
+body:{
+    "username": "ajksdj"
+    "password": "ajksdj"
+    "administrador": true
+}
+*/
+router.post('/', userValidator.validateUser, auth.authenticate, auth.isAdminAuth, (req, res) => {
     UserModel.save(req.body).then(user => {
         if (req.body.administrador == true){
             UserModel.toAdmin(user.username).then(() => {
@@ -26,8 +34,8 @@ router.post('/create', userValidator.validateUser, auth.authenticate, auth.isAdm
     })
 })
 
-
 router.get('/list', auth.authenticate, auth.isAdminAuth, (req, res) => {
+    //parametros:
     const limite = parseInt(req.query.limite) || 10 //padrao 10 por pagina
     const pagina = parseInt(req.query.pagina) || 1 //padrao na pagina 1
 
@@ -44,6 +52,7 @@ router.get('/list', auth.authenticate, auth.isAdminAuth, (req, res) => {
 })
 
 router.get('/search', auth.authenticate, auth.isAdminAuth, (req, res) => {
+    //parametro
     const username = req.query.username
 
     if (username != null && username != ''){
@@ -67,7 +76,8 @@ update:
 param -> Username (do usuário a ser alterado)
 body : new/old username e new/old password
 */
-router.put('/update', auth.authenticate, auth.isAdminAuth, (req, res) => {
+//antes /update
+router.put('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
     const username = req.query.username
     if (username != null && username != ''){
         UserModel.getByUserName(username).then(user =>{
@@ -94,9 +104,11 @@ router.put('/update', auth.authenticate, auth.isAdminAuth, (req, res) => {
         res.status(416).json(fail("USERNAME não informado"))
     }
 })
-
-router.delete('/delete', auth.authenticate, auth.isAdminAuth, (req, res) => {
+//antes /delete
+router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
+    //parametro
     const username = req.query.username
+
     if (username != null && username != ''){
         UserModel.getByUserName(username).then(user =>{
             if(user.administrador != true || req.user.username == user.username){
@@ -116,9 +128,4 @@ router.delete('/delete', auth.authenticate, auth.isAdminAuth, (req, res) => {
     }
 })
 
-/*
-    router.get('/', (req, res) => {
-        return res.json(fail("Nothing here"))
-    })
-*/
 module.exports = router
