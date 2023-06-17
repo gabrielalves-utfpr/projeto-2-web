@@ -23,8 +23,8 @@ module.exports = {
             }
         }
     },
-    isAdminAuth: function(req,res,next){
-        if (req.user.administrador == true) {
+    isAdminAuth: async function(req,res,next){
+        if (await UserModel.isAdmin(req.user.username) == true) {
             next()
         } else {
             return res.status(401).json({status:false, mensagem:'NÃO AUTORIZADO, APENAS PARA ADMIN'})

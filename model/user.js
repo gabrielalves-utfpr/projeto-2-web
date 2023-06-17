@@ -48,7 +48,7 @@ module.exports = {
     save: async function (obj) {
         user = await UserModel.create({
             username: obj.username,
-            password: obj.password
+            password: obj.password,
         })
 
         return user
@@ -87,8 +87,6 @@ module.exports = {
         return await UserModel.findOne({
             where: {
                 username: username
-                // Username has to be the exact
-                // so no { [Op.like]: '%' + username + '%' }
             }
         })
     },
@@ -102,24 +100,24 @@ module.exports = {
         })
     },
 
-    isAdmin: function (obj) {
-        if (obj.administrador == true) {
-            return true
-        } else {
-            return false
-        }
+    isAdmin: async function (username) {
+        return (await UserModel.findOne({
+            where: {
+                username: username,
+            }
+        })).administrador
     },
 
-    toAdmin: async function (id) {
+    toAdmin: async function (username) {
         return await UserModel.update(
             { administrador: true },
-            { where: { id: id } })
+            { where: { username: username } })
     },
 
-    toNotAdmin: async function (id) {
+    toNotAdmin: async function (username) {
         return await UserModel.update(
             { administrador: false },
-            { where: { id: id } })
+            { where: { username: username } })
     },
 
     model: UserModel
