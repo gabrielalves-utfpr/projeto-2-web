@@ -21,9 +21,14 @@ router.post('/', userValidator.validateUser, (req, res) => {
 
 router.post('/subscribe', userValidator.validateUser, (req, res) => {
     UserModel.save(req.body).then(user => {
-        res.json(sucess(user))
-    }).catch(erro => {
-        res.status(401).json(fail("Falha ao Cadastrar"))
+        let token = jwt.sign({username: user.username, password: user.password}, process.env.SECRET, {expiresIn: "1h"})
+        res.json(sucess(token, 'token'))
+    }).catch(error => {
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            res.status(403).jason({ status: false, message: "USERNAME JÁ EXISTE"});
+        } else {
+        res.status(400).json(fail("Falha ao Cadastrar"))
+        }
     })
 })
 
