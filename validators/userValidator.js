@@ -19,9 +19,16 @@ module.exports = {
     validateUser: function(req, res,next){
         const {error, value} = UserSchema.validate(req.body);
         if(error){
-            return res.status(400).json({status: false, menssage: "User/Password Imcompletos/Errados", m2: error})
+            return res.status(400).json({status: false, menssage: "User/Password Incompletos/Errados", m2: error})
         }
         req.body = value
         return next()
+    },
+    validateUserUpdate: function(obj, msg){
+        const {error, value} = UserSchema.validate(obj);
+        if(error){
+            return res.status(400).json({status: false, menssage: msg, erro: error})
+        }
+        return obj
     }
 }

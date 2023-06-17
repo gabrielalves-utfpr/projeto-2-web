@@ -38,11 +38,15 @@ module.exports = {
         return users
     },
     listByPage: async function (limit, pag) {
+        console.log('here')
         const users = await UserModel.findAndCountAll({
+            attributes:{
+                exclude: ['password'],
+            },
             offset: limit * (pag - 1),
             limit: limit
         })
-        return users // {count | rows}
+        return users // {count, rows}
     },
 
     save: async function (obj) {
@@ -54,29 +58,29 @@ module.exports = {
         return user
     },
 
-    update: async function (id, obj) {
+    update: async function (username, obj) {
         return await UserModel.update(
             { username: obj.username, password: obj.password },
-            { where: { id: id } }
+            { where: { username: username } }
         )
     },
 
-    changePassword: async function (id, password) {
+    changePassword: async function (username, password) {
         return await UserModel.update(
             { password: password },
-            { where: { id: id } }
+            { where: { username: username } }
         )
     },
 
-    changeUserName: async function (id, username) {
+    changeUserName: async function (username, username) {
         return await UserModel.update(
             { username: username },
-            { where: { id: id } }
+            { where: { username: username } }
         )
     },
 
-    delete: async function (id) {
-        return await UserModel.destroy({ where: { id: id } })
+    delete: async function (username) {
+        return await UserModel.destroy({ where: { username: username } })
     },
 
     getById: async function (id) {
