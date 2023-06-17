@@ -8,6 +8,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/login', require("./routes/login"))
 app.use('/user', require("./control/UserAPI"))
+app.use('/admin', require("./control/AdminAPI"))
 /*
 app.use('/product', require("./control/ProductAPI"))
 app.use('/categorie', require("./control/CategorieAPI"))
