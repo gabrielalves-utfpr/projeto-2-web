@@ -6,6 +6,7 @@ const UserModel = require('../model/user')
 const SupplierModel = require('../model/supplier')
 const CategorieModel = require('../model/categorie')
 const ProductModel = require('../model/product')
+const { sucess } = require("../helpers/resposta")
 
 router.get('/', async (req, res) => {
     await sequelize.sync({ force: true })
@@ -48,6 +49,7 @@ router.get('/', async (req, res) => {
     4	Celular	    59.99   3       4       5
     5	Batom	    39.99   7       5       5
     */
+   res.json(sucess('Banco Instalado com Sucesso'))
 })
 
 module.exports = router

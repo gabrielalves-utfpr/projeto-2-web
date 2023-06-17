@@ -93,6 +93,15 @@ module.exports = {
         })
     },
 
+    isRegistered: async function(obj){
+        return await UserModel.findOne({
+            where: {
+                username: obj.username,
+                password: obj.password
+            }
+        })
+    },
+
     isAdmin: function (obj) {
         if (obj.administrador == true) {
             return true
