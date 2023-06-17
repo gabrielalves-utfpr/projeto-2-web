@@ -22,6 +22,13 @@ module.exports = {
                 return res.status(401).json({status:false, mensagem:'Credenciais erradas'})
             }
         }
+    },
+    isAdminAuth: function(req,res,next){
+        if (req.user.administrador == true) {
+            next()
+        } else {
+            return res.status(401).json({status:false, mensagem:'NÃO AUTORIZADO, APENAS PARA ADMIN'})
+        }
     }
 
 }

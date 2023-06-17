@@ -25,7 +25,7 @@ router.post('/subscribe', userValidator.validateUser, (req, res) => {
         res.json(sucess(token, 'token'))
     }).catch(error => {
         if (error.name === 'SequelizeUniqueConstraintError') {
-            res.status(403).jason({ status: false, message: "USERNAME JÁ EXISTE"});
+            res.status(403).json({ status: false, message: "USERNAME JÁ EXISTE"});
         } else {
         res.status(400).json(fail("Falha ao Cadastrar"))
         }

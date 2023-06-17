@@ -6,7 +6,7 @@ const {sucess, fail} = require("../helpers/resposta")
 const jwt = require('jsonwebtoken')
 const auth = require('../helpers/auth')
 
-router.get('/', auth.authenticate, (req, res) => {
+router.get('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
     const {username, password} = req.user
     return res.json({status: true, username: username, password: password})
 })
