@@ -81,11 +81,11 @@ router.put('/update', auth.authenticate, auth.isAdminAuth, (req, res) => {
                             res.status(400).json(fail("Erro ao alterar usuario:" + erro.message))
                         })
                     }else{
-                        res.status(400).json(fail("Não é possível alterar outro admin"))
+                        res.status(401).json(fail("Não é possível alterar outro admin"))
                     }
                 }
             } else{
-                res.status(400).json(fail("Usuário não encontrado"))
+                res.status(404).json(fail("Usuário não encontrado"))
             }
         }).catch(erro => {
             res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
@@ -106,9 +106,8 @@ router.delete('/delete', auth.authenticate, auth.isAdminAuth, (req, res) => {
                             res.status(400).json(fail("Erro ao Deletar Usuário:" + erro.message))
                         })
                     }else{
-                        res.status(400).json(fail("Não é possível alterar outro admin"))
+                        res.status(401).json(fail("Não é possível deletar outro admin"))
                     }
-                
         }).catch(erro => {
             res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
         })
