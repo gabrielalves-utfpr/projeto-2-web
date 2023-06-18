@@ -41,7 +41,7 @@ module.exports = {
         console.log('here')
         const users = await UserModel.findAndCountAll({
             attributes:{
-                exclude: ['password'],
+                exclude: ['password', 'id'],
             },
             offset: limit * (pag - 1),
             limit: limit

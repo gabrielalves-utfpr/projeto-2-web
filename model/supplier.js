@@ -42,10 +42,10 @@ module.exports = {
         return supplier
     },
 
-    update: async function (id, name) {
+    update: async function (name, newname) {
         return await SupplierModel.update(
             { name: name },
-            { where: { id: id } }
+            { where: { name: name } }
         )
     },
 

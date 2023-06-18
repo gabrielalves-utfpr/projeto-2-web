@@ -62,6 +62,7 @@ module.exports = {
         const product = await ProductModel.create({
             name: obj.name,
             price: obj.price,
+            qtd: obj.qtd,
             supplier: obj.supplier,
             categorie: obj.categorie
         })
@@ -69,10 +70,11 @@ module.exports = {
         return product
     },
 
-    save: async function (name, price, supplier, categorie) {
+    save: async function (name, price, qtd, supplier, categorie) {
         const product = await ProductModel.create({
             name: name,
             price: price,
+            qtd: qtd,
             supplier: supplier,
             categorie: categorie
         })
@@ -80,10 +82,10 @@ module.exports = {
         return product
     },
 
-    update: async function (id, obj) {
+    update: async function (name, obj) {
         return await ProductModel.update(
             { name: obj.name, price: obj.price },
-            { where: { id: id } }
+            { where: { name: name } }
         )
     },
 
@@ -91,30 +93,57 @@ module.exports = {
         if(obj.qtd == null){
             obj.qtd = 1
         }
-        ProductModel.findOne({
-            where: {
-                name: obj.name
-            }
-        }).then((prod) => {
-            if(prod.qtd >= obj.qtd){
-                ProductModel.update(
-                    { qtd: (prod.qtd - obj.qtd) },
-                    { where: { name: obj.name } }
-                ).then(user =>{
-                    res.status(200).json({status: true, msg: "Produto Comprado"})
-                }).catch((err) => {
-                    res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
-                });
-            }else{
-                res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
-            }
-        }).catch((err) => {
-            res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
-        });
+        if (obj.qtd == 0 || obj.qtd < 0){
+            res.status(400).json({status: false, msg: "Quantidade deve ser maior que 0"})
+        }else{
+            ProductModel.findOne({
+                where: {
+                    name: obj.name
+                }
+            }).then((prod) => {
+                if(prod.qtd >= obj.qtd){
+                    ProductModel.update(
+                        { qtd: (prod.qtd - obj.qtd) },
+                        { where: { name: obj.name } }
+                    ).then(user =>{
+                        res.status(200).json({status: true, msg: "Produto Comprado"})
+                    }).catch((err) => {
+                        res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
+                    });
+                }else{
+                    res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
+                }
+            }).catch((err) => {
+                res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
+            })
+        }
     },
 
-    sumQdt: async function (name){
-
+    sumQdt: async function (name, qtd){ //se qtd negativo, retira
+        if(qtd == null || qtd == 0){
+            res.status(400).json({status: false, msg: "Quantidade a ser somado deve ser maior ou menor que 0"})
+        } else{
+            ProductModel.findOne({
+                where: {
+                    name: name
+                }
+            }).then((prod) => {
+                if((prod.qtd + qtd) >= 0){
+                    ProductModel.update(
+                        { qtd: (prod.qtd + qtd) },
+                        { where: { name: name } }
+                    ).then(user =>{
+                        res.status(200).json({status: true, msg: "Produto Comprado"})
+                    }).catch((err) => {
+                        res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
+                    });
+                }else{
+                    res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
+                }
+            }).catch((err) => {
+                res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
+            })
+        }
     },
 
     changeName: async function (name, newname) {
