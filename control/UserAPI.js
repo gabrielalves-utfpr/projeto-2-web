@@ -33,7 +33,7 @@ router.put('/', userValidator.validateUser, auth.authenticate, (req, res) => {
         })
 })
 //antes /delete
-router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
+router.delete('/', auth.authenticate, (req, res) => {
     //parametro
     const username = req.query.username
 

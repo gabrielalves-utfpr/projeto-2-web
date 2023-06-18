@@ -10,6 +10,7 @@ const { sucess } = require("../helpers/resposta")
 
 router.get('/', async (req, res) => {
     await sequelize.sync({ force: true })
+    try {
     /*
     ? Tabela "User":
 *   id	username	senha	    administrador
@@ -19,12 +20,12 @@ router.get('/', async (req, res) => {
     4	Ana 	    bQ%3&8wK	false
     5	Carlos	    L2!sF5pA	false
     */
-    UserModel.save({username: 'admin', password: 'admin'})
-    UserModel.toAdmin('admin')
-    UserModel.save({username: 'Maria', password: 'jK#7*2v!'})
-    UserModel.save({username: 'Pedro', password: 'X6@fR4tZ'})
-    UserModel.save({username: 'Ana', password: 'bQ%3&8wK'})
-    UserModel.save({username: 'Carlos', password: 'L2!sF5pA'})
+    await UserModel.save({username: 'admin', password: 'admin'})
+    await UserModel.toAdmin('admin')
+    await UserModel.save({username: 'Maria', password: 'jK#7*2v!'})
+    await UserModel.save({username: 'Pedro', password: 'X6@fR4tZ'})
+    await UserModel.save({username: 'Ana', password: 'bQ%3&8wK'})
+    await UserModel.save({username: 'Carlos', password: 'L2!sF5pA'})
     /*
     ? Tabela "Categorie":
 *   id	nome
@@ -34,11 +35,11 @@ router.get('/', async (req, res) => {
     4	Eletrônicos
     5	Beleza
     */
-    CategorieModel.save('Roupas')
-    CategorieModel.save('Calçados')
-    CategorieModel.save('Acessórios')
-    CategorieModel.save('Eletrônicos')
-    CategorieModel.save('Beleza')
+    await CategorieModel.save('Roupas')
+    await CategorieModel.save('Calçados')
+    await CategorieModel.save('Acessórios')
+    await CategorieModel.save('Eletrônicos')
+    await CategorieModel.save('Beleza')
 
     /*
     ? Tabela "Supplier":
@@ -49,11 +50,11 @@ router.get('/', async (req, res) => {
     4	Fornecedor D
     5	Fornecedor E
     */
-    SupplierModel.save('Fornecedor A')
-    SupplierModel.save('Fornecedor B')
-    SupplierModel.save('Fornecedor C')
-    SupplierModel.save('Fornecedor D')
-    SupplierModel.save('Fornecedor E')
+    await SupplierModel.save('Fornecedor A')
+    await SupplierModel.save('Fornecedor B')
+    await SupplierModel.save('Fornecedor C')
+    await SupplierModel.save('Fornecedor D')
+    await SupplierModel.save('Fornecedor E')
 
     /*
     ? Tabela "Product":
@@ -64,12 +65,15 @@ router.get('/', async (req, res) => {
     4	Celular	    59.99   3       4       5
     5	Batom	    39.99   7       5       5
     */
-    ProductModel.saveObj({name: 'Camiseta', price: 29.99, qtd: 10, supplier: 2, categorie: 1})
-    ProductModel.saveObj({name: 'Calça', price: 79.99, qtd: 5, supplier: 3, categorie: 1})
-    ProductModel.saveObj({name: 'Tênis', price: 99.99, qtd: 12, supplier: 1, categorie: 2})
-    ProductModel.saveObj({name: 'Celular', price: 59.99, qtd: 3, supplier: 5, categorie: 4})
-    ProductModel.saveObj({name: 'Batom', price: 39.99, qtd: 7, supplier: 5, categorie: 5})
+    await ProductModel.saveObj({name: 'Camiseta', price: 29.99, qtd: 10, supplier: 2, categorie: 1})
+    await ProductModel.saveObj({name: 'Calça', price: 79.99, qtd: 5, supplier: 3, categorie: 1})
+    await ProductModel.saveObj({name: 'Tênis', price: 99.99, qtd: 12, supplier: 1, categorie: 2})
+    await ProductModel.saveObj({name: 'Celular', price: 59.99, qtd: 3, supplier: 5, categorie: 4})
+    await ProductModel.saveObj({name: 'Batom', price: 39.99, qtd: 7, supplier: 5, categorie: 5})
 
+} catch (error) {
+    res.json(fail('Falha ao Instalar Banco de Dados' + error.name))
+}
     res.json(sucess('Banco Instalado com Sucesso'))
 })
 

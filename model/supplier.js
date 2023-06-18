@@ -44,12 +44,23 @@ module.exports = {
 
     update: async function (name, newname) {
         return await SupplierModel.update(
-            { name: name },
+            { name: newname },
             { where: { name: name } }
         )
     },
 
-    delete: async function (id) {
+    updateById: async function (id, newname) {
+        return await SupplierModel.update(
+            { name: newname },
+            { where: { id: id } }
+        )
+    },
+
+    delete: async function (name) {
+        return await SupplierModel.destroy({ where: { name: name } })
+    },
+
+    deleteById: async function (id) {
         return await SupplierModel.destroy({ where: { id: id } })
     },
 

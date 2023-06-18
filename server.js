@@ -10,10 +10,8 @@ app.use('/login', require("./routes/login"))
 app.use('/user', require("./control/UserAPI"))
 app.use('/admin', require("./control/AdminAPI"))
 app.use('/product', require("./control/ProductAPI"))
-/*
 app.use('/categorie', require("./control/CategorieAPI"))
 app.use('/supplier', require("./control/SupplierAPI"))
-*/
 app.use('/install', require("./control/InstallAPI"))
 
 app.listen(3000, () => {
