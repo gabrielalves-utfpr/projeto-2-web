@@ -156,20 +156,24 @@ router.put('/update/price', auth.authenticate, auth.isAdminAuth, (req, res) => {
     const name = req.query.name
     const id = parseInt(req.query.id)
     const price = req.body.price
-    if (name != null && name != ''){
-        ProductModel.update(name, req.body).then(prod =>{
-            res.json(sucess('Produto['+name+'] Alterado com sucesso'))
-        }).catch(erro => {
-            res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
-        })
-    } else if (id != null && id != ''){
-        ProductModel.updateById(id, req.body).then(prod =>{
-            res.json(sucess('Produto['+id+'] Alterado com sucesso'))
-        }).catch(erro => {
-            res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
-        })
-    } else{
-        res.status(412).json(fail("NAME OR ID não informado"))
+    if (price != null && price >= 0){
+        if (name != null && name != ''){
+            ProductModel.changePrice(name, price).then(prod =>{
+                res.json(sucess('Produto['+name+'] Alterado com sucesso'))
+            }).catch(erro => {
+                res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
+            })
+        } else if (id != null && id != ''){
+            ProductModel.changePriceById(id, price).then(prod =>{
+                res.json(sucess('Produto['+id+'] Alterado com sucesso'))
+            }).catch(erro => {
+                res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
+            })
+        } else{
+            res.status(412).json(fail("NAME OR ID não informado"))
+        }
+    }else {
+        res.status(400).json(fail("Informe um preço válido"))
     }
 })
 

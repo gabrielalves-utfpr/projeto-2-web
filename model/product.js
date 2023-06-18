@@ -176,6 +176,12 @@ module.exports = {
             { where: { name: name } }
         )
     },
+    changePriceById: async function (id, price) {
+        return await ProductModel.update(
+            { price: price },
+            { where: { id: id } }
+        )
+    },
 
     delete: async function (name) {
         return await ProductModel.destroy({ where: { name: name } })
