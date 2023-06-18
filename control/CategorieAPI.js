@@ -77,13 +77,13 @@ router.put('/', nameValidator.validateName, auth.authenticate, auth.isAdminAuth,
     const id = parseInt(req.query.id)
     if (name != null && name != ''){
         CategorieModel.update(name, req.body.name).then(cat =>{
-            res.json(sucess('Alterado com sucesso'))
+            res.json(sucess('Cat['+name+'] Alterado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar categorie (Verifique se já há um categorie de mesmo nome):" + erro.message))
         })
     } else if (id != null && id != ''){
         CategorieModel.updateById(id, req.body.name).then(cat =>{
-            res.json(sucess('Alterado com sucesso'))
+            res.json(sucess('Cat['+id+'] Alterado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar categorie (Verifique se já há um categorie de mesmo nome):" + erro.message))
         })
@@ -98,13 +98,13 @@ router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
     const id = parseInt(req.query.id)
     if (name != null && name != ''){
         CategorieModel.delete(name).then(cat =>{
-            res.json(sucess('Deletado com sucesso'))
+            res.json(sucess('Cat['+name+'] Deletado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar categorie:" + erro.message))
         })
     } else if (id != null && id != ''){
         CategorieModel.deleteById(id).then(cat =>{
-            res.json(sucess('Deletado com sucesso'))
+            res.json(sucess('Cat['+id+'] Deletado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar categorie:" + erro.message))
         })

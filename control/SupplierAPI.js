@@ -77,13 +77,13 @@ router.put('/', nameValidator.validateName, auth.authenticate, auth.isAdminAuth,
     const id = parseInt(req.query.id)
     if (name != null && name != ''){
         SupplierModel.update(name, req.body.name).then(sup =>{
-            res.json(sucess('Alterado com sucesso'))
+            res.json(sucess('Sup['+name+'] Alterado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar supplier (Verifique se já há um supplier de mesmo nome):" + erro.message))
         })
     } else if (id != null && id != ''){
         SupplierModel.updateById(id, req.body.name).then(sup =>{
-            res.json(sucess('Alterado com sucesso'))
+            res.json(sucess('Sup['+id+'] Alterado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar supplier (Verifique se já há um supplier de mesmo nome):" + erro.message))
         })
@@ -98,13 +98,13 @@ router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
     const id = parseInt(req.query.id)
     if (name != null && name != ''){
         SupplierModel.delete(name).then(sup =>{
-            res.json(sucess('Deletado com sucesso'))
+            res.json(sucess('Sup['+name+'] Deletado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar supplier:" + erro.message))
         })
     } else if (id != null && id != ''){
         SupplierModel.deleteById(id).then(sup =>{
-            res.json(sucess('Deletado com sucesso'))
+            res.json(sucess('Sup['+id+'] Deletado com sucesso'))
         }).catch(erro => {
             res.status(400).json(fail("Erro ao alterar supplier:" + erro.message))
         })

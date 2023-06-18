@@ -42,14 +42,24 @@ module.exports = {
         return supplier
     },
 
-    update: async function (id, name) {
+    update: async function (name, newname) {
+        return await CategorieModel.update(
+            { name: newname },
+            { where: { name: name } }
+        )
+    },
+
+    updateById: async function (id, name) {
         return await CategorieModel.update(
             { name: name },
             { where: { id: id } }
         )
     },
 
-    delete: async function (id) {
+    delete: async function (name) {
+        return await CategorieModel.destroy({ where: { name: name } })
+    },
+    deleteById: async function (id) {
         return await CategorieModel.destroy({ where: { id: id } })
     },
 
