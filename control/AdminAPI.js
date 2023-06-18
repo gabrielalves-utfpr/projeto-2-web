@@ -5,11 +5,19 @@ const userValidator = require('../validators/userValidator')
 const {sucess, fail} = require("../helpers/resposta")
 const auth = require('../helpers/auth')
 
+/*
+ ? Admin Permissões: 
+    criar: usuarios e outros admins
+    alterar: usuarios e a si proprio
+    deletar: usuarios e a si proprio
+    listar: usuarios e admins
+    procurar: usuarios e outros admins
+ */
+
 router.get('/', auth.authenticate, auth.isAdminAuth, async (req, res) => {
     return res.json({status: true, username: req.user.username, isAdmin: await UserModel.isAdmin(req.user.username)})
 })
-//Rota para Criar Usuário ou Admin
-//Necessário ser admin
+// ? Rota para Criar Usuário ou Admin
 //antes /create
 /*
 body:{
@@ -74,28 +82,22 @@ router.get('/search', auth.authenticate, auth.isAdminAuth, (req, res) => {
 /*
 update:
 param -> Username (do usuário a ser alterado)
-body : new/old username e new/old password
+body : new or old username e new or old password
 */
 //antes /update
-router.put('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
+router.put('/', userValidator.validateUser, auth.authenticate, auth.isAdminAuth, (req, res) => {
     const username = req.query.username
     if (username != null && username != ''){
         UserModel.getByUserName(username).then(user =>{
             let obj = {username: req.body.username, password: req.body.password}
-            if (obj.username != null && obj.password != null){
-                if (userValidator.validateUserUpdate(obj, "Usuário ou senha Inválido") == obj){
-                    if(user.administrador != true || req.user.username == user.username){
-                        UserModel.update(user.username, obj).then(user =>{
-                            res.json(sucess('Alterado com sucesso'))
-                        }).catch(erro => {
-                            res.status(400).json(fail("Erro ao alterar usuario:" + erro.message))
-                        })
-                    }else{
-                        res.status(401).json(fail("Não é possível alterar outro admin"))
-                    }
-                }
-            } else{
-                res.status(404).json(fail("Usuário não encontrado"))
+            if(user.administrador != true || req.user.username == user.username){
+                UserModel.update(user.username, obj).then(user =>{
+                    res.json(sucess('Alterado com sucesso'))
+                }).catch(erro => {
+                    res.status(400).json(fail("Erro ao alterar usuario:" + erro.message))
+                })
+            }else{
+                res.status(401).json(fail("Não é possível alterar outro admin"))
             }
         }).catch(erro => {
             res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
@@ -112,14 +114,14 @@ router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
     if (username != null && username != ''){
         UserModel.getByUserName(username).then(user =>{
             if(user.administrador != true || req.user.username == user.username){
-                        UserModel.delete(user.username).then(result =>{
-                            res.json(sucess('Usuário ('+user.username+') deletado com sucesso'))
-                        }).catch(erro => {
-                            res.status(400).json(fail("Erro ao Deletar Usuário:" + erro.message))
-                        })
-                    }else{
-                        res.status(401).json(fail("Não é possível deletar outro admin"))
-                    }
+                UserModel.delete(user.username).then(result =>{
+                    res.json(sucess('Usuário ('+user.username+') deletado com sucesso'))
+                }).catch(erro => {
+                    res.status(400).json(fail("Erro ao Deletar Usuário:" + erro.message))
+                })
+            }else{
+                res.status(401).json(fail("Não é possível deletar outro admin"))
+            }
         }).catch(erro => {
             res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
         })

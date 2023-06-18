@@ -24,6 +24,7 @@ module.exports = {
         req.body = value
         return next()
     },
+    /*
     validateUserUpdate: function(obj, msg){
         const {error, value} = UserSchema.validate(obj);
         if(error){
@@ -31,4 +32,5 @@ module.exports = {
         }
         return obj
     }
+    */
 }
