@@ -6,6 +6,7 @@ const app = express()
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
+//rotas
 app.use('/login', require("./routes/login"))
 app.use('/user', require("./control/UserAPI"))
 app.use('/admin', require("./control/AdminAPI"))
