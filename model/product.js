@@ -27,6 +27,12 @@ const ProductModel = sequelize.define('Product', {
         type: DataTypes.DOUBLE,
         allowNull: false,
     },
+    qtd: { // quantidade
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    },
+
 })
 
 ProductModel.belongsTo(SupplierModel, {
@@ -81,17 +87,47 @@ module.exports = {
         )
     },
 
-    changeName: async function (id, name) {
+    buy: async function (obj){ //obj = {name,qtd}
+        if(obj.qtd == null){
+            obj.qtd = 1
+        }
+        ProductModel.findOne({
+            where: {
+                name: obj.name
+            }
+        }).then((prod) => {
+            if(prod.qtd >= obj.qtd){
+                ProductModel.update(
+                    { qtd: (prod.qtd - obj.qtd) },
+                    { where: { name: obj.name } }
+                ).then(user =>{
+                    res.status(200).json({status: true, msg: "Produto Comprado"})
+                }).catch((err) => {
+                    res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
+                });
+            }else{
+                res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
+            }
+        }).catch((err) => {
+            res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
+        });
+    },
+
+    sumQdt: async function (name){
+
+    },
+
+    changeName: async function (name, newname) {
         return await ProductModel.update(
-            { name: name },
-            { where: { id: id } }
+            { newname: newname },
+            { where: { name: name } }
         )
     },
 
-    changePrice: async function (id, price) {
+    changePrice: async function (name, price) {
         return await ProductModel.update(
             { price: price },
-            { where: { id: id } }
+            { where: { name: name } }
         )
     },
 

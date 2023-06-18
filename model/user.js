@@ -50,12 +50,10 @@ module.exports = {
     },
 
     save: async function (obj) {
-        user = await UserModel.create({
+        return await UserModel.create({
             username: obj.username,
             password: obj.password,
         })
-
-        return user
     },
 
     update: async function (username, obj) {
