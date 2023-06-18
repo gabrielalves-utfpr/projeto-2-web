@@ -81,17 +81,34 @@ module.exports = {
 
         return product
     },
+    saveObj: async function (obj) {
+        const product = await ProductModel.create({
+            name: obj.name,
+            price: obj.price,
+            qtd: obj.qtd,
+            supplier: obj.supplier,
+            categorie: obj.categorie
+        })
+
+        return product
+    },
 
     update: async function (name, obj) {
         return await ProductModel.update(
-            { name: obj.name, price: obj.price },
+            { name: obj.name, price: obj.price, qtd: obj.qtd },
             { where: { name: name } }
         )
     },
+    updateById: async function (id, obj) {
+        return await ProductModel.update(
+            { name: obj.name, price: obj.price, qtd: obj.qtd },
+            { where: { id: id } }
+        )
+    },
 
-    buy: async function (obj){ //obj = {name,qtd}
+    buy: async function (res, obj){ //obj = {name,qtd: quantidade a ser comprada}
         if(obj.qtd == null){
-            obj.qtd = 1
+            res.status(401).json({status: false, msg: "Quantidade não informada"})
         }
         if (obj.qtd == 0 || obj.qtd < 0){
             res.status(400).json({status: false, msg: "Quantidade deve ser maior que 0"})
@@ -106,7 +123,7 @@ module.exports = {
                         { qtd: (prod.qtd - obj.qtd) },
                         { where: { name: obj.name } }
                     ).then(user =>{
-                        res.status(200).json({status: true, msg: "Produto Comprado"})
+                        return user
                     }).catch((err) => {
                         res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
                     });
@@ -160,9 +177,13 @@ module.exports = {
         )
     },
 
-    delete: async function (id) {
+    delete: async function (name) {
+        return await ProductModel.destroy({ where: { name: name } })
+    },
+    deleteById: async function (id) {
         return await ProductModel.destroy({ where: { id: id } })
     },
+
 
     getById: async function (id) {
         return await ProductModel.findByPk(id)

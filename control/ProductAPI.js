@@ -1,18 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const ProductModel = require('../model/product')
-const userValidator = require('../validators/userValidator')
+const productValidator = require('../validators/productValidator')
 const {sucess, fail} = require("../helpers/resposta")
 const auth = require('../helpers/auth')
 
 /*
  ? Product Permissões: 
-    criar: admin
-    alterar: admin
-    deletar: admin
-    listar: usuarios e admins
-    procurar: usuarios e admins
-    buy: usuarios e admins
+ *   criar: admin
+ *   alterar: admin
+ *   deletar: admin
+ *   listar: usuarios e admins
+ *   procurar: usuarios e admins
+    procurar Por Categoria: usuarios e admins
+ *   buy: usuarios e admins
  */
 
 router.get('/list', auth.authenticate, (req, res) => {
@@ -21,7 +22,7 @@ router.get('/list', auth.authenticate, (req, res) => {
     const pagina = parseInt(req.query.pagina) || 1 //padrao na pagina 1
 
     if (limite == 5 || limite == 10 || limite == 30){
-        Prod.listByPage(limite, pagina).then(lista =>{
+        ProductModel.listByPage(limite, pagina).then(lista =>{
             res.json(lista)
         }).catch(erro => {
             res.status(400).json(fail("Erro ao solicitar lista:" + erro.message))
@@ -34,21 +35,21 @@ router.get('/list', auth.authenticate, (req, res) => {
 
 router.get('/search', auth.authenticate, auth.isAdminAuth, (req, res) => {
     //parametro
-    const username = req.query.username
+    const name = req.query.name
 
-    if (username != null && username != ''){
-        ProductModel.getByUserName(username).then(user =>{
-            if (user != null){
-                res.json({status: true, username: user.username, administrador: user.administrador})
+    if (name != null && name != ''){
+        ProductModel.getByName(name).then(prod =>{
+            if (prod != null){
+                res.json({status: true, product: prod})
             } else{
-                res.status(400).json(fail("Usuário não encontrado"))
+                res.status(400).json(fail("Produto não encontrado"))
             }
         }).catch(erro => {
-            res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
+            res.status(400).json(fail("Erro ao solicitar Produto:" + erro.message))
 
         })
     } else {
-        res.status(416).json(fail("USERNAME não informado"))
+        res.status(416).json(fail("NAME não informado"))
     }
 })
 
@@ -56,75 +57,119 @@ router.get('/search', auth.authenticate, auth.isAdminAuth, (req, res) => {
 //antes /create
 /*
 body:{
-    "username": "ajksdj"
-    "password": "ajksdj"
-    "administrador": true
+    'name': 'name',
+    'price': price,
+    'qtd': qtd,
+    'supplier': 'supplier',
+    'categorie': 'categorie'
 }
 */
-router.post('/', userValidator.validateUser, auth.authenticate, auth.isAdminAuth, (req, res) => {
-    ProductModel.save(req.body).then(user => {
-        if (req.body.administrador == true){
-            UserModel.toAdmin(user.username).then(() => {
-                res.json(sucess("Admin Criado"))
-            }).catch(erro => {
-                res.status(405).json(fail("Usuário criado porém Falha ao Tornar Usuário Admin"))
-            })
-        } else{
-            res.json(sucess("Usuário Criado"))
-        }
+router.post('/', productValidator.validateProduct, auth.authenticate, auth.isAdminAuth, (req, res) => {
+    ProductModel.saveObj(req.body).then(prod => {
+        res.json(sucess("Produto'"+prod.name+"' Cadastrado"))
     }).catch(erro => {
         res.status(401).json(fail("Falha ao Cadastrar"))
     })
 })
 
-/*
-update:
-param -> Username (do usuário a ser alterado)
-body : new or old username e new or old password
-*/
-//antes /update
-router.put('/', userValidator.validateUser, auth.authenticate, auth.isAdminAuth, (req, res) => {
-    const username = req.query.username
-    if (username != null && username != ''){
-        ProductModel.getByUserName(username).then(user =>{
-            let obj = {username: req.body.username, password: req.body.password}
-            if(user.administrador != true || req.user.username == user.username){
-                ProductModel.update(user.username, obj).then(user =>{
-                    res.json(sucess('Alterado com sucesso'))
-                }).catch(erro => {
-                    res.status(400).json(fail("Erro ao alterar usuario:" + erro.message))
-                })
-            }else{
-                res.status(401).json(fail("Não é possível alterar outro admin"))
-            }
-        }).catch(erro => {
-            res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
-        })
-    } else {
-        res.status(416).json(fail("USERNAME não informado"))
-    }
-})
 //antes /delete
 router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
     //parametro
-    const username = req.query.username
-
-    if (username != null && username != ''){
-        ProductModel.getByUserName(username).then(user =>{
-            if(user.administrador != true || req.user.username == user.username){
-                ProductModel.delete(user.username).then(result =>{
-                    res.json(sucess('Usuário ('+user.username+') deletado com sucesso'))
-                }).catch(erro => {
-                    res.status(400).json(fail("Erro ao Deletar Usuário:" + erro.message))
-                })
-            }else{
-                res.status(401).json(fail("Não é possível deletar outro admin"))
-            }
+    const name = req.query.name
+    const id = parseInt(req.query.id)
+    if (name != null && name != ''){
+        ProductModel.delete(name).then(prod =>{
+            res.json(sucess('Produto['+name+'] Deletado com sucesso'))
         }).catch(erro => {
-            res.status(400).json(fail("Erro ao solicitar usuario:" + erro.message))
+            res.status(400).json(fail("Erro ao alterar product:" + erro.message))
         })
-    } else {
-        res.status(416).json(fail("USERNAME não informado"))
+    } else if (id != null && id != ''){
+        ProductModel.deleteById(id).then(prod =>{
+            res.json(sucess('Produto['+id+'] Deletado com sucesso'))
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao alterar product:" + erro.message))
+        })
+    } else{
+        res.status(412).json(fail("NAME OR ID não informado"))
+    }
+})
+
+router.put('/buy', auth.authenticate, (req, res) => {
+    //parametro
+    const name = req.query.name
+    const id = parseInt(req.query.id)
+    const qtd = parseInt(req.query.qtd) // quantidade a ser comprada
+    if (qtd != null && qtd > 0){
+        if (name != null && name != ''){
+            ProductModel.getByName(name).then(prod =>{
+                ProductModel.buy(res, {name: prod.name, qtd: qtd}).then(prod => {
+                    res.json(sucess('Produto['+name+'] Comprado com sucesso'))
+                }).catch(erro =>{
+                    if(!res.headersSent)res.status(400).json(fail("Erro ao solicitar Produto:" +name+"| erro:"+ erro.message))
+                })
+            }).catch(erro => {
+                if(!res.headersSent)res.status(400).json(fail("Produto Não Encontrado:" + erro.message))
+            })
+        } else if (id != null && id != ''){
+            ProductModel.getById(id).then(prod =>{
+                ProductModel.buy(res, {name: prod.name, qtd: qtd}).then(prod => {
+                    res.json(sucess('Produto['+id+'] Comprado com sucesso'))
+                }).catch(erro =>{
+                    if(!res.headersSent)res.status(400).json(fail("Erro ao solicitar Produto:" +name+"| erro:"+ erro.message))
+                })
+            }).catch(erro => {
+                if(!res.headersSent)res.status(400).json(fail("Produto Não Encontrado:" + erro.message))
+            })
+        } else{
+            res.status(412).json(fail("NAME OR ID não informado"))
+        }
+    }else{
+        res.status(412).json(fail("QTD não informado ou menos que 0"))
+    }
+});
+
+/*
+update:
+param -> name (do produto a ser alterado)
+body : new or old name, new or old price e new or old qtd
+*/
+router.put('/update', productValidator.validateUpProduct, auth.authenticate, auth.isAdminAuth, (req, res) => {
+    const name = req.query.name
+    const id = parseInt(req.query.id)
+    if (name != null && name != ''){
+        ProductModel.update(name, req.body).then(prod =>{
+            res.json(sucess('Produto['+name+'] Alterado com sucesso'))
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
+        })
+    } else if (id != null && id != ''){
+        ProductModel.updateById(id, req.body).then(prod =>{
+            res.json(sucess('Produto['+id+'] Alterado com sucesso'))
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
+        })
+    } else{
+        res.status(412).json(fail("NAME OR ID não informado"))
+    }
+})
+router.put('/update/price', auth.authenticate, auth.isAdminAuth, (req, res) => {
+    const name = req.query.name
+    const id = parseInt(req.query.id)
+    const price = req.body.price
+    if (name != null && name != ''){
+        ProductModel.update(name, req.body).then(prod =>{
+            res.json(sucess('Produto['+name+'] Alterado com sucesso'))
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
+        })
+    } else if (id != null && id != ''){
+        ProductModel.updateById(id, req.body).then(prod =>{
+            res.json(sucess('Produto['+id+'] Alterado com sucesso'))
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao alterar Produto (Verifique se já há um Produto de mesmo nome):" + erro.message))
+        })
+    } else{
+        res.status(412).json(fail("NAME OR ID não informado"))
     }
 })
 
