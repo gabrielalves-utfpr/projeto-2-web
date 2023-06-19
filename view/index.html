@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="stylesheets/style.css" type="text/css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!--Fonte Geologica sans-serif-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link href="style.css" type="text/css" rel="stylesheet">
     <title>Login</title>
 </head>
 <body>
+    <div class = "background">
+        <form>
+            <h3 id="title">Sign In/Up</h3>
+        
+            <label for="username">Username</label>
+            <input type="text" placeholder="Email or Phone" id="username">
+        
+            <label for="password">Password</label>
+            <input type="password" placeholder="Password" id="password">
+        
+            <div id="botoes">
+                <button>Sign In</button>
+                <button>Sign Up</button>
+            </div>
+        </form>
+    </div>
+
     <script src="scripts/login.js" type="module"></script>
 </body>
 </html>
