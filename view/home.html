@@ -19,19 +19,17 @@
             <img id = "user-logo" src="../public/assets/icon.png" alt="" srcset="">
             <h4 id ="username">admin</h3>
             <div class = "nav-bar">
-                <div id = "nav-bar">
-                    <div class="nav-element active" id="n1">
-                        <img class = "nav-logo" for="pg1" src="" alt="" srcset="../public/assets/icons8-buy-96.png">
-                        <a id="pg1">Produtos</a>
-                    </div>
-                    <div class="nav-element" id="n2">
-                        <img class = "nav-logo" src="" alt="" srcset="../public/assets/icons8-categorize-96.png">
-                        <a id="pg2">Categorias</a>
-                    </div>
-                    <div class="nav-element" id="n3">
-                        <img class = "nav-logo" src="" alt="" srcset="../public/assets/icons8-supplier-96.png">
-                        <a id="pg3">Fornecedores</a>
-                    </div>
+                <div class="nav-element active" id="n1">
+                    <img class = "nav-logo" for="pg1" src="" alt="" srcset="../public/assets/icons8-buy-96.png">
+                    <a id="pg1">Produtos</a>
+                </div>
+                <div class="nav-element" id="n2">
+                    <img class = "nav-logo" for="pg2" src="" alt="" srcset="../public/assets/icons8-categorize-96.png">
+                    <a id="pg2">Categorias</a>
+                </div>
+                <div class="nav-element" id="n3">
+                    <img class = "nav-logo" for="pg3" src="" alt="" srcset="../public/assets/icons8-supplier-96.png">
+                    <a id="pg3">Fornecedores</a>
                 </div>
             </div>
             
@@ -47,20 +45,21 @@
         </div>
         <div class = "container" id ="content">
             <div id = "erro-mensagem">
-                <p id = "erro-mensagem-text">Username não Inserido</p>
+                <p id = "erro-mensagem-text">Produtos indisponíveis</p>
             </div>
-            <form>
-                <label for="username">Username</label>
-                <input id="username" type="text" placeholder="Username">
-            
-                <label for="password">Password</label>
-                <input id="password" type="password" placeholder="Password">
-            
-                <div id="botoes">
-                    <button id="sign-in" type="button">Sign In</button>
-                    <button id="sign-up" type="button">Sign Up</button>
+            <div class = "list-prod">
+                <div class="prod" id="1">
+                    <img class = "nav-logo" for="pg1" src="" alt="" srcset="../public/assets/icons8-buy-96.png">
+                    <a id="pg1">Produtos</a>
                 </div>
-            </form>
+                <div class="prod" id="2">
+                    <img class = "nav-logo" src="" alt="" srcset="../public/assets/icons8-categorize-96.png">
+                    <a id="pg2">Categorias</a>
+                </div>
+                <div class="prod" id="3">
+                    <img class = "nav-logo" src="" alt="" srcset="../public/assets/icons8-supplier-96.png">
+                    <a id="pg3">Fornecedores</a>
+                </div>
         </div>
     </div>
 <!--

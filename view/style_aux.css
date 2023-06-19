@@ -26,7 +26,6 @@ body{
     height: 80%;
     min-height:600px;
     width: 80%;
-    min-height:600px;
     padding: 10px;
     border-radius: 10px;
 }
@@ -91,7 +90,10 @@ body{
     background-color: transparent;
 
 }
+.nav-element:hover:not(.active){
+    scale: 1.04;
 
+}
 .nav-element:hover:not(.active) a{
     
     
@@ -110,4 +112,16 @@ body{
 .nav-element:hover:not(.active) .nav-logo{
     background-color: #0085ff;
     cursor: pointer;
+}
+
+
+#erro-mensagem{
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #454545;
+    margin-left: auto;
+    margin-right: auto;
 }
