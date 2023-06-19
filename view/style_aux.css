@@ -63,6 +63,7 @@ body{
     margin-bottom: 40px;
 }
 
+
 .nav-element a {
     display: block;
     text-align: left;
@@ -128,10 +129,16 @@ body{
     background-color: #454545;
 }
 
+#title{
+    margin-bottom: 25px;
+    }
 .list-prod{
     display: flex;
     flex-wrap: wrap;
+    /*
     max-height: 550px;
+    */
+    max-height: 450px;
     overflow-y: auto;
     scroll-behavior: smooth;
 }
