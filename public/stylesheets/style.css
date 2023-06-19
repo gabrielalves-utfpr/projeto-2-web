@@ -30,12 +30,21 @@ body{
     border-radius: 30px;
     box-shadow: 0 2px 15px #0084ff88;
 }
-#title{
+.title{
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
     text-align: center;
     margin-bottom: 40px;
+}
+
+.erro-mensagem{
+    display: none;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #454545;
 }
 
 input{

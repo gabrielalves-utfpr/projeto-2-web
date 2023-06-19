@@ -13,15 +13,16 @@
 </head>
 <body>
     <div class = "background">
-        <h3 id="title">Sign In/Up</h3>
-        
+        <h3 class="title">Sign In/Up</h3>
+        <div class = "erro-mensagem">
+            <p class = "erro-mensagem-text">Username não Inserido</p>
+        </div>
         <form>
-        
             <label for="username">Username</label>
-            <input type="text" placeholder="Username" id="username">
+            <input id="username" type="text" placeholder="Username">
         
             <label for="password">Password</label>
-            <input type="password" placeholder="Password" id="password">
+            <input id="password" type="password" placeholder="Password">
         
             <div id="botoes">
                 <button>Sign In</button>
@@ -30,6 +31,6 @@
         </form>
     </div>
 
-    <script src="scripts/login.js" type="module"></script>
+    <script src="scripts/script_login.js"></script>
 </body>
 </html>
