@@ -38,7 +38,7 @@ body{
     margin-bottom: 40px;
 }
 
-.erro-mensagem{
+#erro-mensagem{
     display: none;
     text-align: center;
     margin-bottom: 10px;
