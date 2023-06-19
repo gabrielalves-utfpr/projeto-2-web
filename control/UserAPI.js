@@ -4,6 +4,7 @@ const UserModel = require('../model/user')
 const userValidator = require('../validators/userValidator')
 const {sucess, fail} = require("../helpers/resposta")
 const auth = require('../helpers/auth')
+const path = require('path');
 
 /*
  ? User Permissões: 
@@ -13,7 +14,7 @@ const auth = require('../helpers/auth')
  */
 
 router.get('/', auth.authenticate, async (req, res) => {
-    return res.json({status: true, username: req.user.username, isAdmin: await UserModel.isAdmin(req.user.username)})
+    res.sendFile(path.resolve(__dirname, '../view/home.html'));
 })
 /*
 update:
