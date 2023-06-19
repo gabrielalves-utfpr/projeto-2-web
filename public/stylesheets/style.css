@@ -64,6 +64,7 @@ input{
 }
 input:hover{
     transition: 0.5s;
+    box-shadow: 0 1.5px 5px #454545;
     background-color: rgb(194, 194, 194);
 }
 
