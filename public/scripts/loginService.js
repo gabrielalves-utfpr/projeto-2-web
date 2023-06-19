@@ -14,14 +14,15 @@ let loginService = {
         const data = {
             method: 'POST',
             headers: {
-                'Content-type': 'application/json', 
+                'Content-type': 'application/json',
             },
             body: JSON.stringify({username: username, password: password})
         }
         const resposta = await fetch('/login/subscribe', data)
         return await resposta.json()
     },
-    nextPage: async function(token){
+    nextPage: async function(){
+        /*
         const data = {
             method: 'GET',
             headers: {
@@ -29,7 +30,12 @@ let loginService = {
                 'Authorization': 'Bearer ' + token
             },
         }
-        await fetch('/user', data)
+        const url = '/user';
+      
+        await fetch(url, data);
+        */
+        window.location.href = "/"
+        //return await fetch('/user', data)
     }
 }
 

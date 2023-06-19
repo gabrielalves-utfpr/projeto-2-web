@@ -13,6 +13,9 @@ app.use('/admin', require("./control/AdminAPI"))
 app.use('/product', require("./control/ProductAPI"))
 app.use('/categorie', require("./control/CategorieAPI"))
 app.use('/supplier', require("./control/SupplierAPI"))
+app.get('/', async (req, res) => {
+    res.sendFile(path.join(__dirname, 'view/home.html'));
+})
 
 app.use('/install', require("./control/InstallAPI"))
 
