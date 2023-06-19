@@ -4,6 +4,11 @@ const UserModel = require('../model/user')
 const userValidator = require('../validators/userValidator')
 const {sucess, fail} = require("../helpers/resposta")
 const jwt = require('jsonwebtoken')
+const path = require('path');
+
+router.get('/', (req, res) =>{
+    res.sendFile(path.resolve(__dirname, '../view/index.html'));
+})
 
 router.post('/', userValidator.validateUser, (req, res) => {
     const {username, password} = req.body

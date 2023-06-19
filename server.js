@@ -19,3 +19,7 @@ app.use('/install', require("./control/InstallAPI"))
 app.listen(3000, () => {
     console.log('Working... http://localhost:3000')
 })
+
+module.exports = {
+    dir:  __dirname
+}
