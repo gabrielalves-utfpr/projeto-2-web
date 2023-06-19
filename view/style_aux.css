@@ -1,0 +1,113 @@
+*{
+    font-family: 'Geologica', sans-serif;
+    color: white;
+    margin: 0;
+    transition: 0.5s;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    /*
+    background: linear-gradient(to bottom right, #0085ff, #69b4ff, #006fff);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,111,255,1) 56%, rgba(105,180,255,1) 98%);
+
+    */
+    background-color: black;
+}
+.application{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1E1E1E;
+    height: 80%;
+    min-height:600px;
+    width: 80%;
+    min-height:600px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#content{
+    width: 100%;
+}
+
+#user-logo{
+    height: 76px;
+}
+#username{
+    margin-top: 10px;
+}
+.space-between{
+    margin: 30px;
+}
+
+.nav-bar{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+
+#menu{
+    margin-left: 40px;
+}
+
+.title{
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.nav-element a {
+    display: block;
+    text-align: left;
+    text-decoration: none;
+}
+
+.nav-element:not(.active) a{
+    color: #454545;
+    font-weight: 400;
+
+}
+.active {
+    color: white;
+    scale: 1.04;
+}
+.active .nav-logo{
+   background-color: #0085ff;
+}
+
+
+.nav-element {
+    color: #454545;
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    background-color: transparent;
+
+}
+
+.nav-element:hover:not(.active) a{
+    
+    
+    color: white;
+    cursor: pointer;
+}
+
+.nav-logo{
+    background-color: #141414;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 7px;
+    width: 25px;
+    display: inline-flex;
+}
+.nav-element:hover:not(.active) .nav-logo{
+    background-color: #0085ff;
+    cursor: pointer;
+}

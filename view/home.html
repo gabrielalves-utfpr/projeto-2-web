@@ -7,31 +7,66 @@
     <!--Fonte Geologica sans-serif-->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <link href="stylesheets/style.css" type="text/css" rel="stylesheet">
+    <!--
     <link href="stylesheets/styleHome.css" type="text/css" rel="stylesheet">
+    -->
+    <link href="style_aux.css" type="text/css" rel="stylesheet">
     <title>Login</title>
 </head>
 <body>
-    
-    <div class = "background">
-        <h3 class="title">Sign In/Up</h3>
-        <div id = "erro-mensagem">
-            <p id = "erro-mensagem-text">Username não Inserido</p>
-        </div>
-        <form>
-            <label for="username">Username</label>
-            <input id="username" type="text" placeholder="Username">
-        
-            <label for="password">Password</label>
-            <input id="password" type="password" placeholder="Password">
-        
-            <div id="botoes">
-                <button id="sign-in" type="button">Sign In</button>
-                <button id="sign-up" type="button">Sign Up</button>
+    <div class = "application">
+        <div class = "container" id ="menu">
+            <img id = "user-logo" src="../public/assets/icon.png" alt="" srcset="">
+            <h4 id ="username">admin</h3>
+            <div class = "nav-bar">
+                <div id = "nav-bar">
+                    <div class="nav-element active" id="n1">
+                        <img class = "nav-logo" for="pg1" src="" alt="" srcset="../public/assets/icons8-buy-96.png">
+                        <a id="pg1">Produtos</a>
+                    </div>
+                    <div class="nav-element" id="n2">
+                        <img class = "nav-logo" src="" alt="" srcset="../public/assets/icons8-categorize-96.png">
+                        <a id="pg2">Categorias</a>
+                    </div>
+                    <div class="nav-element" id="n3">
+                        <img class = "nav-logo" src="" alt="" srcset="../public/assets/icons8-supplier-96.png">
+                        <a id="pg3">Fornecedores</a>
+                    </div>
+                </div>
             </div>
-        </form>
+            
+            <div class="nav-element" id="log-out">
+                <img class = "nav-logo" id="logout-logo" src="" alt="" srcset="../public/assets/icons8-log-out-96.png">
+                <a id="logout">Log out</a>
+            </div>
+        </div>
+        <div class = "space-between">
+            <svg class = "line" width="1" height="400">
+                <line x1="0" y1="0" x2="0" y2="400" stroke="#9e9e9e" stroke-width="1"/>
+              </svg>
+        </div>
+        <div class = "container" id ="content">
+            <div id = "erro-mensagem">
+                <p id = "erro-mensagem-text">Username não Inserido</p>
+            </div>
+            <form>
+                <label for="username">Username</label>
+                <input id="username" type="text" placeholder="Username">
+            
+                <label for="password">Password</label>
+                <input id="password" type="password" placeholder="Password">
+            
+                <div id="botoes">
+                    <button id="sign-in" type="button">Sign In</button>
+                    <button id="sign-up" type="button">Sign Up</button>
+                </div>
+            </form>
+        </div>
     </div>
-
+<!--
     <script src="scripts/script_home.js"  type="module"></script>
+-->
+    <script src="js_aux.js"  type="module"></script>
+
 </body>
 </html>
