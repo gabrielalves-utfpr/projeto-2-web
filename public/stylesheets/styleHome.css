@@ -135,6 +135,10 @@ body{
     margin: auto;
     margin-bottom: 25px;
     }
+
+.space {
+    flex-grow: 1;
+}
 .list-prod{
     display: flex;
     flex-wrap: wrap;
@@ -143,7 +147,11 @@ body{
     max-height: 550px;
     */
     max-height: 450px;
+    /*
     justify-content: space-between;
+    justify-content: space-around;
+    */
+    justify-items: flex-start;
     overflow-y: auto;
     scroll-behavior: smooth;
     margin-right: 15px;
