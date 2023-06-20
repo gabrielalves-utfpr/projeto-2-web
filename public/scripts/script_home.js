@@ -4,6 +4,9 @@ let auth = localStorage.getItem('auth')
 let checkPagin = document.querySelector('input[name="pagin-prod"]:checked').value
 let checkPagina = document.querySelector('input[name="pagina-prod"]:checked').value
 let navPag = 1;
+let pgWich = 'categorie'
+let pgId = 1
+let pgName = ''
 document.getElementById('log-out').addEventListener("click", (evt) =>{
     localStorage.removeItem('auth')
     home.goToLogin()
@@ -35,6 +38,10 @@ list.addEventListener('click', (ev) => {
                 if(i != p[1]) document.getElementById('n'+i).classList.remove('active');
             }
         }
+        checkPagin = 5
+        document.getElementById('pagin-5').checked = true
+        checkPagina = 1
+        document.getElementById('pagina-1').checked = true
         atualiza(navPag,parseInt(checkPagin),parseInt(checkPagina))
     }
 
@@ -54,7 +61,6 @@ window.onload = ()=>{
         fetch('/user', dataGET)
         .then(resp => resp.json()) 
         .then(resposta =>{
-            console.log('jt')
             
             if(resposta.status == true){
                 document.getElementById('username').innerText = resposta.username
@@ -72,7 +78,6 @@ function atualiza(numLista, limite, pagina){
     limite = limite  || 5
     pagina = pagina  || 1
     numLista = numLista  || 1
-    console.log("pagina:"+numLista)
     switch (numLista) {
         case 1:
             atualizaProd(limite, pagina)
@@ -83,16 +88,31 @@ function atualiza(numLista, limite, pagina){
         case 3:
             atualizaCatOrSup('supplier', limite, pagina)
             break;
+        case 4:
+            atualizaProd(limite, pagina, ('/'+pgWich),pgId,pgName)
+            break;
     
+            
         default:
             break;
     }
 }
 
 //Atualiza lista de Produtos
-function atualizaProd(limite, pagina){
+function atualizaProd (limite, pagina, filterFetch, filterId, filterCatName){
     limite = limite  || 5
     pagina = pagina  || 1
+    let ff = filterFetch
+    let fi = filterId
+    let fc = filterCatName
+    if(filterId){
+        filterId = '&filterId='+filterId
+        filterCatName = ' by '+filterCatName
+    }else{
+        filterId =''
+        filterCatName = ''
+        filterFetch = ''
+    }
 
     let auth = localStorage.getItem('auth')
     const dataGET = {
@@ -102,18 +122,16 @@ function atualizaProd(limite, pagina){
             'Authorization': 'Bearer ' + auth
         },
     }
-    fetch('/product/list?limite='+limite+'&pagina='+pagina+'', dataGET)
+    fetch('/product/list'+filterFetch+'?limite='+limite+'&pagina='+pagina+''+filterId, dataGET)
         .then(resp => resp.json()) 
         .then(resposta =>{
             
-            console.log('resposta')
             if(resposta != null && resposta != undefined){
-                document.getElementById("title").innerText = "PRODUCTS"
+                document.getElementById("title").innerText = ("PRODUCTS"+filterCatName)
                 document.getElementById("list-prod").innerHTML =""
-                console.log(resposta)
                 certoLista()
-                let totalPaginas = Math.ceil((resposta.count / resposta.rows.length))
-                console.log(totalPaginas)
+                let caux = (resposta.count / limite)
+                let totalPaginas = Math.ceil(caux)
                 let a,b,c,d,e,f = ''
                 for(let j = 0; j<resposta.rows.length;j++){
                     a = '<div class="prod" id="'+j+'">'
@@ -127,7 +145,6 @@ function atualizaProd(limite, pagina){
                     let aux = (resposta.rows.length-(j+1))
                         if (aux < (resposta.rows.length%4) && aux != 0){
                             
-                            console.log('id: '+(j+1)+' aux:'+aux)
                             f = '</div><div class = space style="max-width:1.2%"><div>'
                         }
                     /*if(((j+1)%4) != 0){
@@ -151,25 +168,30 @@ function atualizaProd(limite, pagina){
                         btn.disable = false
                         btn.addEventListener('click', (ev) => {
                             home.buy(resposta.rows[j].id, auth).then(resp =>{
-                                console.log(resp)
                                 if(resp){
-                                    console.log('SUCESSO')
                                     btn.innerText = "SUCESSO"
                                     btn.classList.add('hover-sucess')
                                     setTimeout(()=>{
                                         btn.classList.remove('hover-sucess')
                                         btn.innerText = "Buy"
-                                        atualizaProd(limite, pagina)
-                                    }, 3000)
+                                        if(filterId == ''){
+                                            atualizaProd(limite, pagina)
+                                        }else{
+                                            atualizaProd(limite, pagina, ff, fi, fc)
+                                        }
+                                    }, 2000)
                                 } else{
-                                    console.log('FAIL')
                                     btn.innerText = "FAIL"
                                     btn.classList.add('hover-fail')
                                     setTimeout(()=>{
                                         btn.classList.remove('hover-fail')
                                         btn.innerText = "Buy"
-                                        atualizaProd(limite, pagina)
-                                    }, 3000)
+                                        if(filterCatName == ''){
+                                            atualizaProd(limite, pagina)
+                                        }else{
+                                            atualizaProd(limite, pagina, ff, fi, fc)
+                                        }
+                                    }, 2000)
 
                                 }
                             })
@@ -187,7 +209,6 @@ function atualizaProd(limite, pagina){
                 document.getElementById("radio-pagina-prod").innerHTML = ''
                 
                 for(let i = 1; i<=(totalPaginas);i++){
-                    console.log('i: '+i)
                     rd = '<input type="radio" id = "pagina-'+i+'" name="pagina-prod" value="'+i+'" '
                     if(i == pagina) {
                         rd +='checked>'
@@ -199,13 +220,10 @@ function atualizaProd(limite, pagina){
                     
                 }
                 
-                console.log('here')
                 
             }else{
                 erroLista()
                 //acessoNegado ('ERRO', resposta.message)
-                console.log('Erro')
-                console.log(resposta)
                 //acessoNegado('ERRO',resposta.message)
             }
             
@@ -217,7 +235,6 @@ document.getElementById('radio-pagin-prod').addEventListener("click", (evt) =>{
     let newcheckPagin = document.querySelector('input[name="pagin-prod"]:checked').value
     if(checkPagin != newcheckPagin){
         checkPagin = newcheckPagin
-        console.log('pag: '+navPag)
         atualiza(navPag,parseInt(checkPagin))
     }
 
@@ -261,7 +278,6 @@ function atualizaCatOrSup(wichOne, limite, pagina){
     limite = limite  || 5
     pagina = pagina  || 1
     wichOne = wichOne || 'categorie'
-    console.log('herrre')
     let auth = localStorage.getItem('auth')
     const dataGET = {
         method: 'GET',
@@ -274,23 +290,17 @@ function atualizaCatOrSup(wichOne, limite, pagina){
         .then(resp => resp.json())
         .then(resposta =>{
             
-            console.log('resposta')
             if(resposta != null && resposta != undefined){
                 document.getElementById("title").innerText = wichOne.toUpperCase()
                 document.getElementById("list-prod").innerHTML =""
-                console.log(resposta)
                 certoLista()
                 let caux = (resposta.count / limite)
-                console.log('conta = '+caux)
                 let totalPaginas = Math.ceil(caux)
-                console.log('total: '+totalPaginas)
                 let a,b,c = ''
                 for(let j = 0; j<resposta.rows.length;j++){
                     a = '<div class="CatOrSup" id="'+j+'">'
                     b = '<h3 class = "cos-t">'+resposta.rows[j].name+'</h3>'
                     c = '</div><div class = space><div>'
-                    
-                    //espaçamento correto entre items
                     
                     /*let aux = (resposta.rows.length-(j+1))
                         if (aux < (resposta.rows.length%4) && aux != 0){
@@ -312,6 +322,13 @@ function atualizaCatOrSup(wichOne, limite, pagina){
                         f = '</div>'}
                         */
                     document.getElementById("list-prod").insertAdjacentHTML("beforeend", a+b+c)
+                    document.getElementById(j).addEventListener("click", (evt) =>{
+                        atualizaProd(limite, pagina, ('/'+wichOne),resposta.rows[j].id,resposta.rows[j].name)
+                        navPag = 4
+                        pgWich = wichOne
+                        pgId = resposta.rows[j].id
+                        pgName = resposta.rows[j].name
+                    })
                     
 
                 }
@@ -320,7 +337,6 @@ function atualizaCatOrSup(wichOne, limite, pagina){
                 document.getElementById("radio-pagina-prod").innerHTML = ''
                 
                 for(let i = 1; i<=(totalPaginas);i++){
-                    console.log('i: '+i)
                     rd = '<input type="radio" id = "pagina-'+i+'" name="pagina-prod" value="'+i+'" '
                     if(i == pagina) {
                         rd +='checked>'
@@ -332,13 +348,10 @@ function atualizaCatOrSup(wichOne, limite, pagina){
                     
                 }
                 
-                console.log('here')
                 
             }else{
                 erroLista()
                 //acessoNegado ('ERRO', resposta.message)
-                console.log('Erro')
-                console.log(resposta)
                 //acessoNegado('ERRO',resposta.message)
             }
             

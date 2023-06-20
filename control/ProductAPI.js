@@ -34,7 +34,7 @@ router.get('/list', auth.authenticate, (req, res) => {
 })
 
 //lista com filtro por categoria
-router.get('/list/categorie/', auth.authenticate, (req, res) => {
+router.get('/list/categorie', auth.authenticate, (req, res) => {
     //parametros:
     /*
     limite: INT
@@ -57,7 +57,7 @@ router.get('/list/categorie/', auth.authenticate, (req, res) => {
     }
 })
 //lista com filtro por categoria
-router.get('/list/supplier/', auth.authenticate, (req, res) => {
+router.get('/list/supplier', auth.authenticate, (req, res) => {
     //parametros:
     /*
     limite: INT

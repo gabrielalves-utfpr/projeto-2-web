@@ -82,11 +82,11 @@ router.get('/', async (req, res) => {
     await ProductModel.saveObj({name: 'Tênis', price: 99.99, qtd: 12, supplier: 1, categorie: 2})
     await ProductModel.saveObj({name: 'Celular', price: 59.99, qtd: 3, supplier: 5, categorie: 4})
     await ProductModel.saveObj({name: 'Batom', price: 39.99, qtd: 7, supplier: 5, categorie: 5})
-    await ProductModel.saveObj({name: 'Óculos', price: 49.99, qtd: 8, supplier: 2, categorie: 4})
-    await ProductModel.saveObj({name: 'Sandália', price: 69.99, qtd: 6, supplier: 3, categorie: 3})
-    await ProductModel.saveObj({name: 'Relógio', price: 89.99, qtd: 4, supplier: 1, categorie: 2})
-    await ProductModel.saveObj({name: 'Perfume', price: 49.99, qtd: 9, supplier: 5, categorie: 1})
-    await ProductModel.saveObj({name: 'Bolsa', price: 79.99, qtd: 3, supplier: 5, categorie: 4})
+    await ProductModel.saveObj({name: 'Óculos', price: 49.99, qtd: 8, supplier: 5, categorie: 3})
+    await ProductModel.saveObj({name: 'Sandália', price: 69.99, qtd: 6, supplier: 3, categorie: 2})
+    await ProductModel.saveObj({name: 'Relógio', price: 89.99, qtd: 4, supplier: 2, categorie: 4})
+    await ProductModel.saveObj({name: 'Perfume', price: 49.99, qtd: 9, supplier: 1, categorie: 5})
+    await ProductModel.saveObj({name: 'Bolsa', price: 79.99, qtd: 3, supplier: 4, categorie: 3})
 
 } catch (error) {
     res.json(fail('Falha ao Instalar Banco de Dados' + error.name))
