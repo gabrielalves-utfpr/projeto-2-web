@@ -14,7 +14,7 @@ router.post('/', userValidator.validateUser, (req, res) => {
     const {username, password} = req.body
     UserModel.getByUserName(username).then(user => {
         if(user.password == password){
-            let token = jwt.sign({username: username, password: password}, process.env.SECRET, {expiresIn: "1h"})
+            let token = jwt.sign({username: username, password: password}, process.env.SECRET, {expiresIn: "5h"})
             res.json(sucess(token, 'token'))
         }else{
             res.status(401).json(fail("Password Incorreto"))
@@ -26,7 +26,7 @@ router.post('/', userValidator.validateUser, (req, res) => {
 
 router.post('/subscribe', userValidator.validateUser, (req, res) => {
     UserModel.save(req.body).then(user => {
-        let token = jwt.sign({username: user.username, password: user.password}, process.env.SECRET, {expiresIn: "1h"})
+        let token = jwt.sign({username: user.username, password: user.password}, process.env.SECRET, {expiresIn: "5h"})
         res.json(sucess(token, 'token'))
     }).catch(error => {
         if (error.name === 'SequelizeUniqueConstraintError') {

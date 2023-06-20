@@ -40,6 +40,9 @@ router.get('/', async (req, res) => {
     await CategorieModel.save('Acessórios')
     await CategorieModel.save('Eletrônicos')
     await CategorieModel.save('Beleza')
+    await CategorieModel.save('Eletrodoméstico')
+    await CategorieModel.save('Categoria Z')
+    await CategorieModel.save('Categoria Y')
 
     /*
     ? Tabela "Supplier":
@@ -55,6 +58,9 @@ router.get('/', async (req, res) => {
     await SupplierModel.save('Fornecedor C')
     await SupplierModel.save('Fornecedor D')
     await SupplierModel.save('Fornecedor E')
+    await SupplierModel.save('Fornecedor F')
+    await SupplierModel.save('Fornecedor G')
+    await SupplierModel.save('Fornecedor H')
 
     /*
     ? Tabela "Product":

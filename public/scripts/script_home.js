@@ -2,6 +2,7 @@ import {default as home} from "./homeService.js";
 
 let checkPagin = document.querySelector('input[name="pagin-prod"]:checked').value
 let checkPagina = document.querySelector('input[name="pagina-prod"]:checked').value
+let navPag = 1;
 document.getElementById('log-out').addEventListener("click", (evt) =>{
     localStorage.removeItem('auth')
     home.goToLogin()
@@ -24,6 +25,7 @@ let list = document.getElementById('nav-bar');
 list.addEventListener('click', (ev) => {
     if (ev.target.tagName === 'A') {
         let p = ev.target.id.split('-')
+        navPag = parseInt(p[1])
         let selected = document.getElementById('n'+p[1]);
         if (selected.classList.contains('active')) {
         } else {
@@ -32,6 +34,7 @@ list.addEventListener('click', (ev) => {
                 if(i != p[1]) document.getElementById('n'+i).classList.remove('active');
             }
         }
+        atualiza(navPag,parseInt(checkPagin),parseInt(checkPagina))
     }
 
 });
@@ -54,7 +57,8 @@ window.onload = ()=>{
             
             if(resposta.status == true){
                 document.getElementById('username').innerText = resposta.username
-                atualizaProd(parseInt(checkPagin))
+                //atualizaProd(parseInt(checkPagin))
+                atualiza(navPag,parseInt(checkPagin),parseInt(checkPagina))
             }else{
                 acessoNegado()
             }
@@ -67,15 +71,16 @@ function atualiza(numLista, limite, pagina){
     limite = limite  || 5
     pagina = pagina  || 1
     numLista = numLista  || 1
+    console.log("pagina:"+numLista)
     switch (numLista) {
         case 1:
             atualizaProd(limite, pagina)
             break;
         case 2:
-            atualizaCatOrForn('categorie',limite, pagina)
+            atualizaCatOrSup('categorie',limite, pagina)
             break;
         case 3:
-            atualizaCatOrForn('supplier', limite, pagina)
+            atualizaCatOrSup('supplier', limite, pagina)
             break;
     
         default:
@@ -106,7 +111,7 @@ function atualizaProd(limite, pagina){
                 document.getElementById("list-prod").innerHTML =""
                 console.log(resposta)
                 certoLista()
-                let totalPaginas = resposta.count / resposta.rows.length
+                let totalPaginas = Math.ceil((resposta.count / resposta.rows.length))
                 console.log(totalPaginas)
                 let a,b,c,d,e,f = ''
                 for(let j = 0; j<resposta.rows.length;j++){
@@ -140,6 +145,9 @@ function atualizaProd(limite, pagina){
                     document.getElementById("list-prod").insertAdjacentHTML("beforeend", a+b+c+d+e+f)
                     
                     //Função da Lógica de Negócio: Buy
+                    document.getElementById("b-"+j).addEventListener('click', (ev) => {
+                        home.buy(resposta.rows[j].id)
+                    })
 
                 }
                 
@@ -147,6 +155,7 @@ function atualizaProd(limite, pagina){
                 document.getElementById("radio-pagina-prod").innerHTML = ''
                 
                 for(let i = 1; i<=(totalPaginas);i++){
+                    console.log('i: '+i)
                     rd = '<input type="radio" id = "pagina-'+i+'" name="pagina-prod" value="'+i+'" '
                     if(i == pagina) {
                         rd +='checked>'
@@ -176,7 +185,8 @@ document.getElementById('radio-pagin-prod').addEventListener("click", (evt) =>{
     let newcheckPagin = document.querySelector('input[name="pagin-prod"]:checked').value
     if(checkPagin != newcheckPagin){
         checkPagin = newcheckPagin
-        atualizaProd(parseInt(checkPagin))
+        console.log('pag: '+navPag)
+        atualiza(navPag,parseInt(checkPagin))
     }
 
 })
@@ -184,7 +194,7 @@ document.getElementById('radio-pagina-prod').addEventListener("click", (evt) =>{
     let newcheckPagina = document.querySelector('input[name="pagina-prod"]:checked').value
     if(checkPagina != newcheckPagina){
         checkPagina = newcheckPagina
-        atualizaProd(parseInt(checkPagin), parseInt(checkPagina))
+        atualiza(navPag, parseInt(checkPagin), parseInt(checkPagina))
     }
 
 })
@@ -214,11 +224,12 @@ function certoLista(){
 }
 
 
-function atualizaCatOrForn(wichOne, limite, pagina){
+//Atualiza lista de Categorie ou Suppliers
+function atualizaCatOrSup(wichOne, limite, pagina){
     limite = limite  || 5
     pagina = pagina  || 1
     wichOne = wichOne || 'categorie'
-
+    console.log('herrre')
     let auth = localStorage.getItem('auth')
     const dataGET = {
         method: 'GET',
@@ -237,24 +248,24 @@ function atualizaCatOrForn(wichOne, limite, pagina){
                 document.getElementById("list-prod").innerHTML =""
                 console.log(resposta)
                 certoLista()
-                let totalPaginas = resposta.count / resposta.rows.length
-                console.log(totalPaginas)
-                let a,b,c,d,e,f = ''
+                let caux = (resposta.count / limite)
+                console.log('conta = '+caux)
+                let totalPaginas = Math.ceil(caux)
+                console.log('total: '+totalPaginas)
+                let a,b,c = ''
                 for(let j = 0; j<resposta.rows.length;j++){
-                    a = '<div class="prod" id="'+j+'">'
-                    b = '<h3 class = "prod-t">'+resposta.rows[j].name+'</h3>'
-                    c = '<h4 class = "prod-q"> Qtd Disponível: '+resposta.rows[j].qtd+' un.</h4>'
-                    d = '<h4 class = "prod-p">R$ '+resposta.rows[j].price+'</h4>'
-                    e = '<button class = "buy" id="b-'+j+'" type="button">Buy</button>'
-                    f = '</div><div class = space><div>'
+                    a = '<div class="CatOrSup" id="'+j+'">'
+                    b = '<h3 class = "cos-t">'+resposta.rows[j].name+'</h3>'
+                    c = '</div><div class = space><div>'
                     
                     //espaçamento correto entre items
-                    let aux = (resposta.rows.length-(j+1))
+                    
+                    /*let aux = (resposta.rows.length-(j+1))
                         if (aux < (resposta.rows.length%4) && aux != 0){
                             
                             console.log('id: '+(j+1)+' aux:'+aux)
-                            f = '</div><div class = space style="max-width:1.2%"><div>'
-                        }
+                            c = '</div><div class = space style="max-width:1.2%"><div>'
+                        }*/
                     /*if(((j+1)%4) != 0){
                         let aux = (resposta.count-(j+1))
                         if (aux < 4 && aux != 0){
@@ -268,9 +279,8 @@ function atualizaCatOrForn(wichOne, limite, pagina){
                         console.log('hey'+(j+1)) 
                         f = '</div>'}
                         */
-                    document.getElementById("list-prod").insertAdjacentHTML("beforeend", a+b+c+d+e+f)
+                    document.getElementById("list-prod").insertAdjacentHTML("beforeend", a+b+c)
                     
-                    //Função da Lógica de Negócio: Buy
 
                 }
                 
@@ -278,6 +288,7 @@ function atualizaCatOrForn(wichOne, limite, pagina){
                 document.getElementById("radio-pagina-prod").innerHTML = ''
                 
                 for(let i = 1; i<=(totalPaginas);i++){
+                    console.log('i: '+i)
                     rd = '<input type="radio" id = "pagina-'+i+'" name="pagina-prod" value="'+i+'" '
                     if(i == pagina) {
                         rd +='checked>'

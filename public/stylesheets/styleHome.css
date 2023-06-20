@@ -156,6 +156,22 @@ body{
     scroll-behavior: smooth;
     margin-right: 15px;
 }
+
+.CatOrSup{
+    /*
+    background: linear-gradient(to right, #0085ff 0%, #69B4FF 100%);
+    
+    */
+    background: linear-gradient(to right, #006fff 0%, #69B4FF 100%);
+    padding: 30px;
+    border-radius: 10px;
+    margin: 7px;
+
+}
+.CatOrSup:hover{
+    scale: 1.1;
+}
+
 .prod{
     background-color: #2d2d2d;
     padding: 25px;
@@ -219,6 +235,13 @@ button {
   .radio-container{
     margin-top: 10px;
   }
+  input[name="pagin-prod"]:not(:checked):hover + label, 
+  input[name="pagina-prod"]:not(:checked):hover + label{
+    background-color: #69b4ff;
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 5px;
+  }
 
   input[name="pagin-prod"], 
   input[name="pagina-prod"] {
@@ -238,6 +261,8 @@ button {
     padding: 5px 10px;
     border-radius: 5px;
   }
+
+
 
 
 
