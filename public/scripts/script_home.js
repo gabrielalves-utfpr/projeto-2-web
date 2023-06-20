@@ -1,5 +1,6 @@
 import {default as home} from "./homeService.js";
 
+let auth = localStorage.getItem('auth')
 let checkPagin = document.querySelector('input[name="pagin-prod"]:checked').value
 let checkPagina = document.querySelector('input[name="pagina-prod"]:checked').value
 let navPag = 1;
@@ -51,7 +52,7 @@ window.onload = ()=>{
     }
     if(auth != null){
         fetch('/user', dataGET)
-        .then(resp => resp.json()) // Parse the response JSON
+        .then(resp => resp.json()) 
         .then(resposta =>{
             console.log('jt')
             
@@ -102,7 +103,7 @@ function atualizaProd(limite, pagina){
         },
     }
     fetch('/product/list?limite='+limite+'&pagina='+pagina+'', dataGET)
-        .then(resp => resp.json()) // Parse the response JSON
+        .then(resp => resp.json()) 
         .then(resposta =>{
             
             console.log('resposta')
@@ -145,9 +146,40 @@ function atualizaProd(limite, pagina){
                     document.getElementById("list-prod").insertAdjacentHTML("beforeend", a+b+c+d+e+f)
                     
                     //Função da Lógica de Negócio: Buy
-                    document.getElementById("b-"+j).addEventListener('click', (ev) => {
-                        home.buy(resposta.rows[j].id)
-                    })
+                    let btn = document.getElementById("b-"+j)
+                    if(resposta.rows[j].qtd > 0){
+                        btn.disable = false
+                        btn.addEventListener('click', (ev) => {
+                            home.buy(resposta.rows[j].id, auth).then(resp =>{
+                                console.log(resp)
+                                if(resp){
+                                    console.log('SUCESSO')
+                                    btn.innerText = "SUCESSO"
+                                    btn.classList.add('hover-sucess')
+                                    setTimeout(()=>{
+                                        btn.classList.remove('hover-sucess')
+                                        btn.innerText = "Buy"
+                                        atualizaProd(limite, pagina)
+                                    }, 3000)
+                                } else{
+                                    console.log('FAIL')
+                                    btn.innerText = "FAIL"
+                                    btn.classList.add('hover-fail')
+                                    setTimeout(()=>{
+                                        btn.classList.remove('hover-fail')
+                                        btn.innerText = "Buy"
+                                        atualizaProd(limite, pagina)
+                                    }, 3000)
+
+                                }
+                            })
+                        })
+                    }else{
+                        btn.innerText = "INDISPONÍVEL"
+                        btn.classList.add('hover-fail')
+                        btn.disable = true
+
+                    }
 
                 }
                 
@@ -239,7 +271,7 @@ function atualizaCatOrSup(wichOne, limite, pagina){
         },
     }
     fetch('/'+wichOne+'/list?limite='+limite+'&pagina='+pagina+'', dataGET)
-        .then(resp => resp.json()) // Parse the response JSON
+        .then(resp => resp.json())
         .then(resposta =>{
             
             console.log('resposta')

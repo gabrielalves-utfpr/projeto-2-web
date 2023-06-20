@@ -220,7 +220,8 @@ button {
     font-size: 16px;
     font-weight: 400;
   }
-  
+
+
   button:hover {
     cursor: pointer;
     border-radius: 5px;
@@ -229,6 +230,50 @@ button {
     color: white;
     box-shadow: 0 2px 10px #0085ff;
   }
+  .hover-sucess:hover{
+    transition: 1s;
+    
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.5s;
+    background: linear-gradient(to bottom right, #00ff00, #00FF7F);
+    color: white;
+    box-shadow: 0 2px 10px #00ff00;
+  
+  }
+  .hover-sucess{
+    transition: 1s;
+    
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.5s;
+    background: linear-gradient(to bottom right, #00ff00, #00FF7F);
+    color: white;
+    box-shadow: 0 2px 10px #00ff00;
+  
+  }
+  .hover-fail{
+    transition: 1s;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.5s;
+    background: linear-gradient(to bottom right, #8d0000, #c2402a);
+    color: white;
+    box-shadow: 0 2px 10px #8d0000;
+  
+  }
+  .hover-fail:hover{
+    transition: 1s;
+    
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.5s;
+    background: linear-gradient(to bottom right, #8d0000, #c2402a);
+    color: white;
+    box-shadow: 0 2px 10px #8d0000;
+  
+  }
+
   #pagination{
     display: flex;
   }
