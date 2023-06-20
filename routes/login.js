@@ -6,10 +6,20 @@ const {sucess, fail} = require("../helpers/resposta")
 const jwt = require('jsonwebtoken')
 const path = require('path');
 
+/*
+*Rota GET Página de Login: index.html
+*/
 router.get('/', (req, res) =>{
     res.sendFile(path.resolve(__dirname, '../view/index.html'));
 })
 
+/*
+*Rota POST de Login
+body:{
+    'name': 'name',
+    'password': password
+}
+*/
 router.post('/', userValidator.validateUser, (req, res) => {
     const {username, password} = req.body
     UserModel.getByUserName(username).then(user => {
@@ -23,7 +33,13 @@ router.post('/', userValidator.validateUser, (req, res) => {
         res.status(401).json(fail("Usuário Incorreto"))
     })
 })
-
+/*
+*Rota POST de Cadastro
+body:{
+    'name': 'name',
+    'password': password
+}
+*/
 router.post('/subscribe', userValidator.validateUser, (req, res) => {
     UserModel.save(req.body).then(user => {
         let token = jwt.sign({username: user.username, password: user.password}, process.env.SECRET, {expiresIn: "5h"})
@@ -35,10 +51,6 @@ router.post('/subscribe', userValidator.validateUser, (req, res) => {
         res.status(400).json(fail("Falha ao Cadastrar"))
         }
     })
-})
-
-router.get('/', (req, res) => {
-    return res.json(fail("Nothing here"))
 })
 
 module.exports = router

@@ -12,14 +12,19 @@ const auth = require('../helpers/auth')
     deletar: a si proprio
  */
 
+/*
+*Rota GET que retorna username do usuário logado e se ele é administrador
+*/
 router.get('/', auth.authenticate, async (req, res) => {
     return res.json({status: true, username: req.user.username, isAdmin: await UserModel.isAdmin(req.user.username)})
 })
 /*
-update:
-body : new/old username e new/old password
+*Rota PUT Atualiza User Logado "/update"
+    body:{
+    'name': 'name', (novo ou antigo)
+    'password': password, (novo ou antigo)
+}
 */
-//antes /update
 router.put('/', userValidator.validateUser, auth.authenticate, (req, res) => {
         let obj = {username: req.body.username, password: req.body.password}
         UserModel.getByUserName(req.user.username).then(user =>{
@@ -33,6 +38,12 @@ router.put('/', userValidator.validateUser, auth.authenticate, (req, res) => {
         })
 })
 //antes /delete
+/*
+*Rota DELETE Remoção do proprio User logado"/"
+    parametros:
+        username: insere o proprio username para validar ação
+        ! não é possível apagar outro usuário
+*/
 router.delete('/', auth.authenticate, (req, res) => {
     //parametro
     const username = req.query.username
