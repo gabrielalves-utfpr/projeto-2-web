@@ -51,13 +51,11 @@ module.exports = {
         return products
     },
     listByPage: async function (limit, pag) {
-        const { count, rows } = await ProductModel.findAndCountAll({
+        const product = await ProductModel.findAndCountAll({
             offset: limit * (pag - 1),
             limit: limit
         })
-        const {countTotal} = await ProductModel.findAndCountAll()
-        const totalPages = countTotal / count
-        return { count, rows, totalPages} // {count | rows}
+        return product // {count | rows}
     },
 
     saveObj: async function (obj) {

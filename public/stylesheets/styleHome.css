@@ -213,6 +213,35 @@ button {
     color: white;
     box-shadow: 0 2px 10px #0085ff;
   }
+  #pagination{
+    display: flex;
+  }
+  .radio-container{
+    margin-top: 10px;
+  }
+
+  input[name="pagin-prod"], 
+  input[name="pagina-prod"] {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  input[name="pagin-prod"]:not(:checked) + label, 
+  input[name="pagina-prod"]:not(:checked) + label {
+    margin: 10px;
+  }
+
+  input[name="pagin-prod"]:checked + label, 
+  input[name="pagina-prod"]:checked + label {
+    background-color: #0085ff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+
+
+
 
 /*
 Scrollbar:
