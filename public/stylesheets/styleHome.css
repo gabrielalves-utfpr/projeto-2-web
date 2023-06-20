@@ -166,6 +166,7 @@ body{
     padding: 30px;
     border-radius: 10px;
     margin: 7px;
+    cursor: pointer;
 
 }
 .CatOrSup:hover{

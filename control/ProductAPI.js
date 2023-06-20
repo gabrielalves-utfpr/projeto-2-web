@@ -33,6 +33,53 @@ router.get('/list', auth.authenticate, (req, res) => {
     }
 })
 
+//lista com filtro por categoria
+router.get('/list/categorie/', auth.authenticate, (req, res) => {
+    //parametros:
+    /*
+    limite: INT
+    pagina: INT
+    filterId: INT
+    */
+    const limite = parseInt(req.query.limite) || 10 //padrao 10 por pagina
+    const pagina = parseInt(req.query.pagina) || 1 //padrao na pagina 1
+    const filterId = parseInt(req.query.filterId) || 1 //padrao na pagina 1
+
+    if (limite == 5 || limite == 10 || limite == 30){
+        ProductModel.listByPageByCat(limite, pagina, filterId).then(lista =>{
+            res.json(lista)
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao solicitar lista:" + erro.message))
+
+        })
+    } else {
+        res.status(416).json(fail("Limite deve ser 5 OU 10 OU 30"))
+    }
+})
+//lista com filtro por categoria
+router.get('/list/supplier/', auth.authenticate, (req, res) => {
+    //parametros:
+    /*
+    limite: INT
+    pagina: INT
+    filterId: INT
+    */
+    const limite = parseInt(req.query.limite) || 10 //padrao 10 por pagina
+    const pagina = parseInt(req.query.pagina) || 1 //padrao na pagina 1
+    const filterId = parseInt(req.query.filterId) || 1 //padrao na pagina 1
+
+    if (limite == 5 || limite == 10 || limite == 30){
+        ProductModel.listByPageBySup(limite, pagina, filterId).then(lista =>{
+            res.json(lista)
+        }).catch(erro => {
+            res.status(400).json(fail("Erro ao solicitar lista:" + erro.message))
+
+        })
+    } else {
+        res.status(416).json(fail("Limite deve ser 5 OU 10 OU 30"))
+    }
+})
+
 router.get('/search', auth.authenticate, auth.isAdminAuth, (req, res) => {
     //parametro
     const name = req.query.name
@@ -103,7 +150,7 @@ router.put('/buy', auth.authenticate, (req, res) => {
         if (name != null && name != ''){
             ProductModel.getByName(name).then(prod =>{
                 ProductModel.buy(res, {name: prod.name, qtd: qtd}).then(prod => {
-                    res.json(sucess('Produto['+name+'] Comprado com sucesso'))
+                    
                 }).catch(erro =>{
                     if(!res.headersSent)res.status(400).json(fail("Erro ao solicitar Produto:" +name+"| erro:"+ erro.message))
                 })
@@ -112,8 +159,12 @@ router.put('/buy', auth.authenticate, (req, res) => {
             })
         } else if (id != null && id != ''){
             ProductModel.getById(id).then(prod =>{
-                ProductModel.buy(res, {name: prod.name, qtd: qtd}).then(prod => {
-                    res.json(sucess('Produto['+id+'] Comprado com sucesso'))
+                ProductModel.buy(res, {name: prod.name, qtd: qtd}).then(produt => {
+                    console.log("-----------:"+produt)
+                    if (produt == true){
+                        console.log('okkkk')
+                        
+                    }
                 }).catch(erro =>{
                     if(!res.headersSent)res.status(400).json(fail("Erro ao solicitar Produto:" +name+"| erro:"+ erro.message))
                 })

@@ -67,7 +67,7 @@ router.get('/', async (req, res) => {
     | id |    nome    | preço | QTD | idCat | idSupplier |
     |----|------------|-------|-----|-------|------------|
     |  1 | Camiseta   | 29.99 |  10 |     1 |          2 |
-    |  2 | Calça      | 79.99 |   5 |     1 |          3 |
+    |  2 | Calça      | 79.99 |   0 |     1 |          3 |
     |  3 | Tênis      | 99.99 |  12 |     2 |          1 |
     |  4 | Celular    | 59.99 |   3 |     4 |          5 |
     |  5 | Batom      | 39.99 |   7 |     5 |          5 |
@@ -78,7 +78,7 @@ router.get('/', async (req, res) => {
     | 10 | Bolsa      | 79.99 |   3 |     3 |          4 |
     */
     await ProductModel.saveObj({name: 'Camiseta', price: 29.99, qtd: 10, supplier: 2, categorie: 1})
-    await ProductModel.saveObj({name: 'Calça', price: 79.99, qtd: 5, supplier: 3, categorie: 1})
+    await ProductModel.saveObj({name: 'Calça', price: 79.99, qtd: 0, supplier: 3, categorie: 1})
     await ProductModel.saveObj({name: 'Tênis', price: 99.99, qtd: 12, supplier: 1, categorie: 2})
     await ProductModel.saveObj({name: 'Celular', price: 59.99, qtd: 3, supplier: 5, categorie: 4})
     await ProductModel.saveObj({name: 'Batom', price: 39.99, qtd: 7, supplier: 5, categorie: 5})

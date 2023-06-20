@@ -10,6 +10,7 @@ const sequelize = require("../helpers/db")
 const supplier = require("./supplier")
 const SupplierModel = require('./supplier').model
 const CategorieModel = require('./categorie').model
+const {sucess, fail} = require("../helpers/resposta")
 
 const ProductModel = sequelize.define('Product', {
     id: {
@@ -52,6 +53,28 @@ module.exports = {
     },
     listByPage: async function (limit, pag) {
         const product = await ProductModel.findAndCountAll({
+            offset: limit * (pag - 1),
+            limit: limit
+        })
+        return product // {count | rows}
+    },
+    //Lista filtrado pela categoria
+    listByPageByCat: async function (limit, pag, filterId) {
+        const product = await ProductModel.findAndCountAll({
+            where: {
+                categorie: filterId
+              },
+            offset: limit * (pag - 1),
+            limit: limit
+        })
+        return product // {count | rows}
+    },
+    //Lista filtrado pelo supplier
+    listByPageBySup: async function (limit, pag, filterId) {
+        const product = await ProductModel.findAndCountAll({
+            where: {
+                supplier: filterId
+              },
             offset: limit * (pag - 1),
             limit: limit
         })
@@ -123,15 +146,15 @@ module.exports = {
                         { qtd: (prod.qtd - obj.qtd) },
                         { where: { name: obj.name } }
                     ).then(user =>{
-                        return user
+                        res.json(sucess('Produto Comprado com sucesso: '))
                     }).catch((err) => {
-                        if(!res.headersSent)res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
+                        res.status(400).json({status: false, msg: "Não foi possível comprar o Produto"})
                     });
                 }else{
-                    if(!res.headersSent)res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
+                    res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
                 }
             }).catch((err) => {
-                if(!res.headersSent)res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
+                res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
             })
         }
     },
