@@ -125,13 +125,13 @@ module.exports = {
                     ).then(user =>{
                         return user
                     }).catch((err) => {
-                        res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
+                        if(!res.headersSent)res.status(400).json({status: false, msg: "Não foi possível achar comprar o Produto"})
                     });
                 }else{
-                    res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
+                    if(!res.headersSent)res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
                 }
             }).catch((err) => {
-                res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
+                if(!res.headersSent)res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
             })
         }
     },
