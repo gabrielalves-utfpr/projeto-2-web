@@ -174,7 +174,7 @@ router.delete('/', auth.authenticate, auth.isAdminAuth, (req, res) => {
         qtd: quantidade a ser comprado
 */
 
-router.put('/buy', auth.authenticate, (req, res) => {
+router.put('/buy', auth.authenticate, async (req, res) => {
     //parametro
     const name = req.query.name
     const id = parseInt(req.query.id)
@@ -191,16 +191,11 @@ router.put('/buy', auth.authenticate, (req, res) => {
                 if(!res.headersSent)res.status(400).json(fail("Produto Não Encontrado:" + erro.message))
             })
         } else if (id != null && id != ''){
-            ProductModel.getById(id).then(prod =>{
-                ProductModel.buy(res, {name: prod.name, qtd: qtd}).then(produt => {
-                    console.log("-----------:"+produt)
-                    if (produt == true){
-                        console.log('okkkk')
-                        
-                    }
-                }).catch(erro =>{
-                    if(!res.headersSent)res.status(400).json(fail("Erro ao solicitar Produto:" +name+"| erro:"+ erro.message))
-                })
+            ProductModel.getById(id).then( async prod =>{
+                let resposta = await ProductModel.buy({name: prod.name, qtd: qtd})
+                res.json(resposta)
+                console.log(resposta)
+                
             }).catch(erro => {
                 if(!res.headersSent)res.status(400).json(fail("Produto Não Encontrado:" + erro.message))
             })

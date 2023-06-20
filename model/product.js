@@ -129,36 +129,31 @@ module.exports = {
         )
     },
 
-    buy: async function (res, obj){ //obj = {name,qtd: quantidade a ser comprada}
+    buy: async function (obj){ //obj = {name,qtd: quantidade a ser comprada}
         if(obj.qtd == null){
-            res.status(401).json({status: false, msg: "Quantidade não informada"})
+            return {status: false, msg: "Quantidade não informada"}
         }
         if (obj.qtd == 0 || obj.qtd < 0){
-            res.status(400).json({status: false, msg: "Quantidade deve ser maior que 0"})
+            return {status: false, msg: "Quantidade deve ser maior que 0"}
         }else{
-            ProductModel.findOne({
+            let prod = await ProductModel.findOne({
                 where: {
                     name: obj.name
-                }
-            }).then((prod) => {
+                }})
                 if(prod.qtd >= obj.qtd){
-                    ProductModel.update(
+                    let rep =  await ProductModel.update(
                         { qtd: (prod.qtd - obj.qtd) },
                         { where: { name: obj.name } }
-                    ).then(user =>{
-                        res.json(sucess('Produto Comprado com sucesso: '))
-                    }).catch((err) => {
-                        res.status(400).json({status: false, msg: "Não foi possível comprar o Produto"})
-                    });
+                    )
+                    console.log('here')
+                    return {status: true, msg: "Produto Comprado com sucesso"}
+                    
                 }else{
-                    res.status(410).json({status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd})
+                    return {status: false, msg: "Quantidade do Produto no estoque insuficiente. Temos disponíveis:"+prod.qtd}
                 }
-            }).catch((err) => {
-                res.status(401).json({status: false, msg: "Não foi possível achar o produto"})
-            })
         }
     },
-
+/*
     sumQdt: async function (name, qtd){ //se qtd negativo, retira
         if(qtd == null || qtd == 0){
             res.status(400).json({status: false, msg: "Quantidade a ser somado deve ser maior ou menor que 0"})
@@ -185,6 +180,7 @@ module.exports = {
             })
         }
     },
+    */
 
     changeName: async function (name, newname) {
         return await ProductModel.update(
